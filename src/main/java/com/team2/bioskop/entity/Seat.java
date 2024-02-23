@@ -1,4 +1,4 @@
-package com.team2.bioskop;
+package com.team2.bioskop.entity;
 
 public class Seat {
     private int id;

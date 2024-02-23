@@ -1,14 +1,15 @@
-package com.team2.bioskop;
+package com.team2.bioskop.view;
 
 import com.enigma.validation.ValidationInput;
+import com.team2.bioskop.service.SeatServiceImp;
 
 import java.util.Scanner;
 
-public class SeatMenu {
+public class SeatView {
     public static void SeatMenu() {
         boolean isSuccess = true;
         boolean loop = true;
-        var seatService = new SeatService();
+        var seatService = new SeatServiceImp();
         Scanner input = new Scanner(System.in);
 
         int choice;

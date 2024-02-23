@@ -1,6 +1,8 @@
-package com.team2.bioskop;
+package com.team2.bioskop.service;
 
-public class SeatService {
+import com.team2.bioskop.repositories.SeatRepository;
+
+public class SeatServiceImp implements SeatService {
     public void getAllSeat() {
         try {
             System.out.printf("%-20s%-20s%-20s%n", "id", "seat_number", "theater_id");

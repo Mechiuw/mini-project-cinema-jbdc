@@ -1,4 +1,7 @@
-package com.team2.bioskop;
+package com.team2.bioskop.repositories;
+
+import com.team2.bioskop.DbConfig;
+import com.team2.bioskop.entity.Seat;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
