@@ -1,4 +1,4 @@
-package com.team2.bioskop;
+package com.team2.bioskop.util;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -19,3 +19,4 @@ public class DbConnector {
         return conn;
     }
 }
+
