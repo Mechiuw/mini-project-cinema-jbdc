@@ -8,6 +8,7 @@ public class FilmView {
     public static void view(){
         boolean checkFilm = true;
         Scanner input = new Scanner(System.in);
+        FilmServiceImpl filmService = new FilmServiceImpl();
         do {
             System.out.println("===================FILM (CRUD)===================");
             System.out.println("1. INSERT FILM");
@@ -21,10 +22,10 @@ public class FilmView {
             input.nextLine();
 
             switch (chooseFilm){
-                case 1 -> FilmServiceImpl.insert();
-                case 2 -> FilmServiceImpl.update();
-                case 3 -> FilmServiceImpl.delete();
-                case 4 -> FilmServiceImpl.show();
+                case 1 -> filmService.insertFilm();
+                case 2 -> filmService.updateFilm();
+                case 3 -> filmService.deleteFilm();
+                case 4 -> filmService.showFilm();
                 case 5 -> checkFilm = false;
                 default-> checkFilm = true;
             }
