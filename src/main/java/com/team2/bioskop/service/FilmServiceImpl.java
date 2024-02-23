@@ -7,9 +7,9 @@ import com.team2.bioskop.util.Validation;
 import java.sql.Date;
 import java.util.Scanner;
 
-public class FilmServiceImpl {
+public class FilmServiceImpl implements FilmService{
     static Scanner input = new Scanner(System.in);
-    public static void insert(){
+    public void insertFilm(){
         System.out.println("Input Film Tittle : ");
         String tittle = input.nextLine();
         System.out.println("Input Film duration : ");
@@ -30,10 +30,10 @@ public class FilmServiceImpl {
         input.nextLine();
 
         Film film = new Film(tittle, duration, showDate, price, rating);
-        FilmRepositories.insertFilm(film);
+        FilmRepositories.insert(film);
     }
 
-    public static void update(){
+    public void updateFilm(){
         FilmRepositories.showAllFilm();
         System.out.println("Input ID Film Update : ");
         int id = input.nextInt();
@@ -59,18 +59,18 @@ public class FilmServiceImpl {
         input.nextLine();
 
         Film film = new Film(tittle, duration, showDate, price, rating);
-        FilmRepositories.updateFilm(film, id);
+        FilmRepositories.update(film, id);
     }
 
-    public static void delete(){
+    public void deleteFilm(){
         FilmRepositories.showAllFilm();
         System.out.println("Input ID Film Delete : ");
         int id = input.nextInt();
         input.nextLine();
-        FilmRepositories.deleteFilm(id);
+        FilmRepositories.delete(id);
     }
 
-    public static void show(){
+    public void showFilm(){
         FilmRepositories.showAllFilm();
     }
 }

@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class FilmRepositories {
-    public static void insertFilm(Film film) {
+    public static void insert(Film film) {
         try(Connection connection = DbConnector.connectToDb()){
             connection.setAutoCommit(false);
 
@@ -44,7 +44,7 @@ public class FilmRepositories {
         }
     }
 
-    public static void updateFilm (Film film, int id){
+    public static void update(Film film, int id){
         try(Connection connection = DbConnector.connectToDb()){
             String sql = """
                     UPDATE t_film SET title = ?, duration = ?, show_date = ?,
@@ -65,7 +65,7 @@ public class FilmRepositories {
         }
     }
 
-    public static void deleteFilm (int id){
+    public static void delete (int id){
         try(Connection connection = DbConnector.connectToDb()){
             String sql = String.format("DELETE FROM t_film WHERE id = ?;");
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
