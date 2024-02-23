@@ -5,21 +5,16 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class DbConnector {
-    public static Connection connect_to_db() {
-        String jdbcurl = "jdbc:postgresql://localhost:5432/";
-        String user = System.getenv("DB_USERNAME");
-        String pass = System.getenv("DB_PASS");
-        String dbname = "db_bioskop";
-        Connection conn = null;
-        try {
-            conn = DriverManager.getConnection(jdbcurl + dbname, user, pass);
-            if (conn != null) {
-                System.out.println("Connection established");
-            } else {
-                System.out.println("Connection Failed");
-            }
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
+    public static Connection connectToDb() throws SQLException {
+        final String JDBC_URL = "jdbc:postgresql://localhost:5432/db-bioskop";
+        final String USERNAME = System.getenv("DB_USER");
+        final String PASSWORD = System.getenv("DB_PASSWORD");
+        Connection conn = DriverManager.getConnection(JDBC_URL, USERNAME, PASSWORD);
+
+        if(conn != null){
+            System.out.println("Connect Success");
+        }else{
+            System.out.println("Connect Failed");
         }
         return conn;
     }
