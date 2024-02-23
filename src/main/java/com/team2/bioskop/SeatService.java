@@ -1,90 +1,79 @@
 package com.team2.bioskop;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.HashMap;
 public class SeatService {
-    public static HashMap<String, Object> addSeat(int id, String seatNumber, int theaterId) {
-        HashMap<String, Object> seat;
+    public void getAllSeat() {
         try {
-            var conn = DbConfig.connect();
-            seat = new HashMap<>();
-
-            String query = """
-                    INSERT INTO m_seat (id, seat_number, theater_id)
-                    VALUES (?, ?, ?);
-                    """;
-            PreparedStatement pr = conn.prepareStatement(query);
-            pr.setInt(1,id);
-            pr.setString(2, seatNumber);
-            pr.setInt(3, theaterId);
-            pr.executeUpdate();
-
-            seat.put("id", id);
-            seat.put("seat_number", seatNumber);
-            seat.put("theater_id", theaterId);
-
-            conn.close();
-            return seat;
-
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
+            System.out.printf("%-20s%-20s%-20s%n", "id", "seat_number", "theater_id");
+            System.out.println("-".repeat(50));
+            SeatRepository.readAll();
+        } catch (Exception e) {
+            System.out.println("Data not found");
+            System.out.println(e.getMessage());
         }
     }
 
-    public static void readAll() {
+    public boolean getSeatById(int id) {
         try {
-            var conn = DbConfig.connect();
-            String query = """
-                    SELECT * FROM m_seat;
-                    """;
-
-            PreparedStatement pr = conn.prepareStatement(query);
-            ResultSet rs = pr.executeQuery();
-            var meta = rs.getMetaData();
-
-            while (rs.next()) {
-                for (int i = 1; i <= meta.getColumnCount(); i++) {
-                    System.out.printf("%-20s", rs.getString(i));
-                }
-                System.out.println();
-            }
-            pr.close();
-            rs.close();
-            conn.close();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
+            var seat = SeatRepository.readOne(id);
+            int idx = seat.getId();
+            String seatNumber = seat.getSeatNumber();
+            int theaterId = seat.getTheaterId();
+            System.out.printf("%-20s%-20s%-20s\n", "id", "seat_number", "seat");
+            System.out.println("-".repeat(50));
+            System.out.printf("%-20d%-20s%-20s", idx, seatNumber, theaterId);
+            return true;
+        } catch (Exception e) {
+            System.out.println("Seat not found");
+            System.out.println(e.getMessage());
+            return false;
         }
     }
 
-    public static HashMap<String, Object> readOne(int id) {
-        HashMap<String, Object> seat;
+    public boolean createSeat(int id, String seatNumber, int theaterId) {
         try {
-            var conn = DbConfig.connect();
-            seat = new HashMap<>();
-            String query = """
-                    SELECT * FROM m_seat WHERE id = ?;
-                    """;
-            PreparedStatement pr = conn.prepareStatement(query);
-            pr.setInt(1, id);
-            ResultSet rs = pr.executeQuery();
-            var meta = rs.getMetaData();
-
-            // seat.put()
-
-            while (rs.next()) {
-                for (int i = 1; i <= meta.getColumnCount(); i++) {
-
-                }
+            var seat = SeatRepository.readOne(id);
+            if (seat != null) {
+                System.out.println("Id Already Used");
+                return false;
             }
-
-            pr.close();
-
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
+            SeatRepository.addSeat(id, seatNumber, theaterId);
+            System.out.println(">>> Adding Success <<<");
+            return true;
+        } catch (Exception e) {
+            System.out.println("Add seat is failed");
+            System.out.println(e.getMessage());
+            return false;
         }
+    }
 
-        return null;
+    public boolean updateSeat(int id, String seatNumber, int theaterId) {
+        try {
+            var seat = SeatRepository.readOne(id);
+            String uSeatNumber = (seatNumber.isEmpty()) ? seat.getSeatNumber() : seatNumber;
+            int uTheaterId = (theaterId == 0) ? seat.getTheaterId() : theaterId;
+            SeatRepository.update(id, uSeatNumber, uTheaterId);
+            System.out.println(">>> UPDATE SUCCESSFULLY <<<");
+            return true;
+        } catch (Exception e) {
+            System.out.println("Seat not found");
+            System.out.println(e.getMessage());
+            return false;
+        }
+    }
+
+    public boolean deleteSeat(int id) {
+        try {
+            var seat = SeatRepository.readOne(id);
+            if (seat == null) {
+                System.out.println("Seat not found");
+                return false;
+            }
+            SeatRepository.delete(id);
+            System.out.println(">>> DELETE SUCCESSFULLY <<<");
+            return true;
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            return false;
+        }
     }
 }

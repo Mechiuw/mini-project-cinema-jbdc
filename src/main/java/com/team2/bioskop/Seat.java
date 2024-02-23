@@ -10,4 +10,16 @@ public class Seat {
         this.seatNumber = seatNumber;
         this.theaterId = theaterId;
     }
+
+    public int getId() {
+        return id;
+    }
+
+    public String getSeatNumber() {
+        return seatNumber;
+    }
+
+    public int getTheaterId() {
+        return theaterId;
+    }
 }

@@ -1,8 +1,9 @@
 package com.team2.bioskop;
 
+//TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
+// click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
 public class Main {
-    public static void main(String[] args) {
-        // SeatService.addSeat(1,"T001", 1);
-        SeatService.readAll();
-    }
+        public static void main(String[] args) {
+           SeatMenu.SeatMenu();
+        }
 }
