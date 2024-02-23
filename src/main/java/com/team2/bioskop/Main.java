@@ -2,6 +2,6 @@ package com.team2.bioskop;
 
 public class Main {
     public static void main(String[] args) {
-        System.out.println("Hello world!");
+        DbConnector.connect_to_db();
     }
 }
