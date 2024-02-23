@@ -2,6 +2,7 @@ package com.team2.bioskop;
 
 public class Main {
     public static void main(String[] args) {
-        System.out.println("Hello world!");
+        // SeatService.addSeat(1,"T001", 1);
+        SeatService.readAll();
     }
 }
