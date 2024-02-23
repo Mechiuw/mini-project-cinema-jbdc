@@ -1,5 +1,6 @@
 package com.team2.bioskop.view;
 
+import com.team2.bioskop.service.FilmService;
 import com.team2.bioskop.service.FilmServiceImpl;
 
 import java.util.Scanner;
@@ -8,7 +9,7 @@ public class FilmView {
     public static void view(){
         boolean checkFilm = true;
         Scanner input = new Scanner(System.in);
-        FilmServiceImpl filmService = new FilmServiceImpl();
+        FilmService filmService = new FilmServiceImpl() ;
         do {
             System.out.println("===================FILM (CRUD)===================");
             System.out.println("1. INSERT FILM");
