@@ -5,7 +5,7 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class DbConnector {
-    public Connection connectToDb() throws SQLException {
+    public static Connection connectToDb() throws SQLException {
         final String JDBC_URL = "jdbc:postgresql://localhost:5432/db-bioskop";
         final String USERNAME = System.getenv("DB_USER");
         final String PASSWORD = System.getenv("DB_PASSWORD");
