@@ -1,9 +1,6 @@
 package com.team2.bioskop;
 
-import com.team2.bioskop.entity.Theater;
 import com.team2.bioskop.repositories.SeatRepositories;
-import com.team2.bioskop.repositories.TheaterRepositories;
-import com.team2.bioskop.service.TheaterService;
 import com.team2.bioskop.service.TheaterServiceImpl;
 
 public class Main {

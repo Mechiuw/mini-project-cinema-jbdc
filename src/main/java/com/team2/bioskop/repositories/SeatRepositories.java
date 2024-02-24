@@ -1,8 +1,7 @@
 package com.team2.bioskop.repositories;
 
-import com.team2.bioskop.DbConfig;
 import com.team2.bioskop.entity.Seat;
-import com.team2.bioskop.util.Helper;
+import com.team2.bioskop.util.DbConnector;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -14,7 +13,7 @@ public class SeatRepositories {
         Seat seat;
         // int lastId = Helper.getLastIdFromTable();
         try {
-            var conn = DbConfig.connect();
+            var conn = DbConnector.connectToDb();
 
             String query = """
                     INSERT INTO m_seat (seat_number, theater_id)
@@ -42,7 +41,7 @@ public class SeatRepositories {
         try {
 
             listSeat = new ArrayList<>();
-            var conn = DbConfig.connect();
+            var conn = DbConnector.connectToDb();
             String query = """
                     SELECT * FROM m_seat;
                     """;
@@ -72,7 +71,7 @@ public class SeatRepositories {
 
     public static Seat readOne(int id) {
         try {
-            var conn = DbConfig.connect();
+            var conn = DbConnector.connectToDb();
             String query = """
                     SELECT * FROM m_seat WHERE id = ?;
                     """;
@@ -98,7 +97,7 @@ public class SeatRepositories {
 
     public static Seat update(int id, String seatNumber, int theaterId) {
         try {
-            var conn = DbConfig.connect();
+            var conn = DbConnector.connectToDb();
             String query = """
                     UPDATE m_seat SET seat_number = ?, theater_number = ? WHERE id = ?; 
                     """;
@@ -122,7 +121,7 @@ public class SeatRepositories {
 
     public static void delete(int id) {
         try {
-            var conn = DbConfig.connect();
+            var conn = DbConnector.connectToDb();
             String query = """
                     DELETE FROM m_seat WHERE id = ?;
                     """;
