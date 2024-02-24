@@ -45,6 +45,29 @@ public class TheaterRepositories {
         return rs;
     }
 
+    public static Theater readDataByID(Integer id) {
+        Theater theater = new Theater();
+        ResultSet rs;
+        try (Connection conn = DbConnector.connectToDb()) {
+            String query = """
+                select * from t_theater t
+                where id = ?;
+                """;
+            PreparedStatement pstmt = conn.prepareStatement(query);
+            pstmt.setInt(1, id);
+            rs = pstmt.executeQuery();
+            if (rs.next()) {
+                theater.setId(rs.getInt("id"));
+                theater.setTheater_number(rs.getString("theater_number"));
+                theater.setStock(rs.getInt("stock"));
+                theater.setFilm_id(rs.getInt("film_id"));
+            }
+        }catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return theater;
+    }
+
     public static Theater updateData(Theater theater) {
         try (Connection conn = DbConnector.connectToDb()) {
             String query = """
