@@ -14,4 +14,12 @@ public class Validation {
         return null;
     }
 
+    public static int checkNumberInput(String value) {
+        try {
+            return Integer.parseInt(value);
+        } catch (Exception e) {
+            System.out.println("You must input integer value");
+        }
+        return -1;
+    }
 }
