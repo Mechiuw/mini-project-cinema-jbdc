@@ -12,7 +12,7 @@ import java.util.Scanner;
 public class CustomerServiceImpl implements CustomerService {
     @Override
     public void addCustomer() {
-        try (Connection connect = DbConnector.connect_to_db()){
+        try (Connection connect = DbConnector.connectToDb()){
 
             Scanner scan = new Scanner(System.in);
             System.out.println("please enter your name and your birth date : ");
@@ -29,7 +29,7 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public void showCustomer() {
-        try(Connection connect = DbConnector.connect_to_db()){
+        try(Connection connect = DbConnector.connectToDb()){
             CustomerRepositories.read(connect);
         }catch(SQLException e){
             System.out.println(e.getMessage());
@@ -38,7 +38,7 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public void updateCustomer() {
-        try(Connection connect = DbConnector.connect_to_db()) {
+        try(Connection connect = DbConnector.connectToDb()) {
             Scanner scan = new Scanner(System.in);
             System.out.println("please enter your selection (name/birth)");
             String nameOrBirth = scan.nextLine();

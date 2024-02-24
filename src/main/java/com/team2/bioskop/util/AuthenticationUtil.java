@@ -12,7 +12,7 @@ import java.util.*;
 
 public class AuthenticationUtil {
     public static void userInput(){
-        try (Connection connect = DbConnector.connect_to_db()){
+        try (Connection connect = DbConnector.connectToDb()){
 
             Scanner scan = new Scanner(System.in);
             System.out.println("ever been here? (yes/no)");
@@ -31,8 +31,6 @@ public class AuthenticationUtil {
             } else {
                 userInput();
             }
-
-
 
         }  catch ( SQLException e ){
             System.out.println(e.getMessage());
