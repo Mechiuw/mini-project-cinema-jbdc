@@ -17,13 +17,13 @@ public class SeatRepositories {
             var conn = DbConfig.connect();
 
             String query = """
-                    INSERT INTO m_seat (id, seat_number, theater_number)
-                    VALUES (?, ?, ?);
+                    INSERT INTO m_seat (seat_number, theater_number)
+                    VALUES (?, ?);
                     """;
             PreparedStatement pr = conn.prepareStatement(query);
-            pr.setInt(1, lastId + 1);
-            pr.setString(2, seatNumber);
-            pr.setString(3, theaterNumber);
+//            pr.setInt(1, lastId + 1);
+            pr.setString(1, seatNumber);
+            pr.setString(2, theaterNumber);
             pr.executeUpdate();
 
             seat = new Seat(lastId, seatNumber, theaterNumber);

@@ -36,8 +36,6 @@ public class TheaterServiceImpl {
             System.out.println("theater_number -> " + theater_number);
             System.out.println("stock -> " + stock);
             System.out.println("film_id -> " + film_id);
-            theater.getTheater_number();
-            theater.getStock();
         }catch (Exception e){
             System.out.println(e.getMessage());
         }
@@ -49,15 +47,16 @@ public class TheaterServiceImpl {
         Theater theater = null;
         try {
             rs = TheaterRepositories.readData();
+
             System.out.println("ID | Theater Number | Stock | Title     |");
             while (rs.next()) {
                 System.out.print(rs.getString("id") + "  | ");
                 System.out.print(rs.getString("theater_number") + "             | ");
                 System.out.print(rs.getString("stock") + "   | ");
                 System.out.println(rs.getString("title") + " | ");
-                theater.setId(rs.getInt("id"));
-                theater.setTheater_number(rs.getString("theater_number"));
-                theater.setStock(rs.getInt("stock"));
+                theater = new Theater(rs.getString("stock"),
+                        Integer.parseInt(rs.getString("film_id")),
+                        Integer.parseInt(rs.getString("id")));
             }
         }catch (SQLException e){
             System.out.println(e.getMessage());
