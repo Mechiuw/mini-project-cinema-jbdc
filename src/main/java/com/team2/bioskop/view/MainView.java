@@ -1,6 +1,7 @@
 package com.team2.bioskop.view;
 
 import com.team2.bioskop.service.FilmServiceImpl;
+import com.team2.bioskop.util.AuthenticationUtil;
 
 import java.util.Scanner;
 
@@ -18,20 +19,20 @@ public class MainView {
             int chooseMenu = input.nextInt();
             input.nextLine();
 
-//            switch (chooseMenu){
-//                case 1 :
-//                    CustomerView.view();
-//                    break;
-//                case 2 :
-//                    AdminView.viewAdmin();
-//                    break;
-//                case 3 :
-//                    checkMenu = false;
-//                    break;
-//                default :
-//                    checkMenu = true;
-//                    break;
-//            }
+            switch (chooseMenu){
+                case 1 :
+                    AuthenticationUtil.userInput();
+                    break;
+                case 2 :
+                    AdminView.viewAdmin();
+                    break;
+                case 3 :
+                    checkMenu = false;
+                    break;
+                default :
+                    checkMenu = true;
+                    break;
+            }
         }while(checkMenu);
     }
 }

@@ -12,11 +12,11 @@ public class FilmView {
         FilmService filmService = new FilmServiceImpl() ;
         do {
             System.out.println("===================FILM (CRUD)===================");
-            System.out.println("1. INSERT FILM");
-            System.out.println("2. UPDATE FILM BY ID");
-            System.out.println("3. DELETE FILM BY ID");
-            System.out.println("4. SHOW ALL FILM");
-            System.out.println("5. BACK TO MENU ADMIN");
+            System.out.println("1. INSERT FILM  ");
+            System.out.println("2. UPDATE FILM BY ID     ");
+            System.out.println("3. DELETE FILM BY ID    ");
+            System.out.println("4. SHOW ALL FILM     ");
+            System.out.println("5. BACK TO MENU ADMIN    ");
             System.out.println("=================================================");
             System.out.println("Choose Menu : ");
             int chooseFilm = input.nextInt();

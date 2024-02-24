@@ -20,14 +20,14 @@ public class AdminView {
             int chooseAdmin = input.nextInt();
             input.nextLine();
 
-//            switch (chooseAdmin){
-//                case 1 -> FilmView.view();
-//                case 2 -> TheaterView.view();
-//                case 3 -> SeatView.view();
-//                case 4 -> RatingView.view();
-//                case 5 -> checkAdmin = false;
-//                default-> checkAdmin = true;
-//            }
+            switch (chooseAdmin){
+                case 1 -> FilmView.view();
+                case 2 -> RatingView.view();
+                case 3 -> RatingView.view();
+                case 4 -> RatingView.view();
+                case 5 -> checkAdmin = false;
+                default-> checkAdmin = true;
+            }
         }while(checkAdmin);
     }
 }
