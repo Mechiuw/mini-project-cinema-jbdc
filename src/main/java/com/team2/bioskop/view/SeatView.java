@@ -1,7 +1,7 @@
 package com.team2.bioskop.view;
-
-import com.enigma.validation.ValidationInput;
+import com.team2.bioskop.service.SeatService;
 import com.team2.bioskop.service.SeatServiceImp;
+import com.team2.bioskop.util.ValidationInput;
 
 import java.util.Scanner;
 
@@ -9,7 +9,7 @@ public class SeatView {
     public static void SeatMenu() {
         boolean isSuccess = true;
         boolean loop = true;
-        var seatService = new SeatServiceImp();
+        SeatService seatService = new SeatServiceImp();
         Scanner input = new Scanner(System.in);
 
         int choice;
@@ -49,14 +49,10 @@ public class SeatView {
                     System.out.print("Enter Seat Number: ");
                     String seatNumber = input.nextLine();
 
-                    System.out.print("Enter Theater ID: ");
-                    int theaterId;
+                    System.out.print("Enter Theater Number: ");
+                    String theaterNumber = input.nextLine();
 
-                    do {
-                        theaterId = ValidationInput.check(input.nextLine());
-                    } while (theaterId == -1);
-
-                    isSuccess = seatService.createSeat(id, seatNumber, theaterId);
+                    isSuccess = seatService.createSeat(seatNumber, theaterNumber);
                     System.out.println();
                 }
 
@@ -70,14 +66,10 @@ public class SeatView {
                     System.out.print("Enter Seat Number: ");
                     String seatNumber = input.nextLine();
 
-                    System.out.print("Enter Theater ID: ");
-                    int theaterId;
+                    System.out.print("Enter Theater Number: ");
+                    String theaterNumber = input.nextLine();
 
-                    do {
-                        theaterId = ValidationInput.check(input.nextLine());
-                    } while (theaterId == -1);
-
-                    isSuccess = seatService.updateSeat(id, seatNumber, theaterId);
+                    isSuccess = seatService.updateSeat(id, seatNumber, theaterNumber);
                     System.out.println();
 
                 }

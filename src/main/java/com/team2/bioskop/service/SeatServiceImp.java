@@ -1,13 +1,16 @@
 package com.team2.bioskop.service;
 
-import com.team2.bioskop.repositories.SeatRepository;
+import com.team2.bioskop.entity.Theater;
+import com.team2.bioskop.repositories.SeatRepositories;
+
+import java.sql.SQLException;
 
 public class SeatServiceImp implements SeatService {
     public void getAllSeat() {
         try {
             System.out.printf("%-20s%-20s%-20s%n", "id", "seat_number", "theater_id");
             System.out.println("-".repeat(50));
-            SeatRepository.readAll();
+            SeatRepositories.readAll();
         } catch (Exception e) {
             System.out.println("Data not found");
             System.out.println(e.getMessage());
@@ -16,13 +19,13 @@ public class SeatServiceImp implements SeatService {
 
     public boolean getSeatById(int id) {
         try {
-            var seat = SeatRepository.readOne(id);
+            var seat = SeatRepositories.readOne(id);
             int idx = seat.getId();
             String seatNumber = seat.getSeatNumber();
-            int theaterId = seat.getTheaterId();
+            String theaterNumber = seat.getTheaterNumber();
             System.out.printf("%-20s%-20s%-20s\n", "id", "seat_number", "seat");
             System.out.println("-".repeat(50));
-            System.out.printf("%-20d%-20s%-20s", idx, seatNumber, theaterId);
+            System.out.printf("%-20d%-20s%-20s", idx, seatNumber, theaterNumber);
             return true;
         } catch (Exception e) {
             System.out.println("Seat not found");
@@ -31,14 +34,9 @@ public class SeatServiceImp implements SeatService {
         }
     }
 
-    public boolean createSeat(int id, String seatNumber, int theaterId) {
+    public boolean createSeat(String seatNumber, String theaterNumber) {
         try {
-            var seat = SeatRepository.readOne(id);
-            if (seat != null) {
-                System.out.println("Id Already Used");
-                return false;
-            }
-            SeatRepository.addSeat(id, seatNumber, theaterId);
+            SeatRepositories.addSeat(seatNumber, theaterNumber);
             System.out.println(">>> Adding Success <<<");
             return true;
         } catch (Exception e) {
@@ -48,12 +46,30 @@ public class SeatServiceImp implements SeatService {
         }
     }
 
-    public boolean updateSeat(int id, String seatNumber, int theaterId) {
+    public boolean createManySeat(Theater theater) {
         try {
-            var seat = SeatRepository.readOne(id);
+            int theaterId = theater.getId();
+            String theaterNumber = theater.getTheater_number();
+            int stockSeatTheater = theater.getStock();
+
+            String seatNumberPattern = "S-" + theaterId + "-";
+
+            for (int i = 1; i <= stockSeatTheater; i++) {
+                createSeat(seatNumberPattern + i, theaterNumber);
+            }
+            return true;
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            return false;
+        }
+    }
+
+    public boolean updateSeat(int id, String seatNumber, String theaterNumber) {
+        try {
+            var seat = SeatRepositories.readOne(id);
             String uSeatNumber = (seatNumber.isEmpty()) ? seat.getSeatNumber() : seatNumber;
-            int uTheaterId = (theaterId == 0) ? seat.getTheaterId() : theaterId;
-            SeatRepository.update(id, uSeatNumber, uTheaterId);
+            String uTheaterNumber = (theaterNumber.isEmpty()) ? seat.getTheaterNumber() : theaterNumber;
+            SeatRepositories.update(id, uSeatNumber, uTheaterNumber);
             System.out.println(">>> UPDATE SUCCESSFULLY <<<");
             return true;
         } catch (Exception e) {
@@ -65,12 +81,12 @@ public class SeatServiceImp implements SeatService {
 
     public boolean deleteSeat(int id) {
         try {
-            var seat = SeatRepository.readOne(id);
+            var seat = SeatRepositories.readOne(id);
             if (seat == null) {
                 System.out.println("Seat not found");
                 return false;
             }
-            SeatRepository.delete(id);
+            SeatRepositories.delete(id);
             System.out.println(">>> DELETE SUCCESSFULLY <<<");
             return true;
         } catch (Exception e) {
