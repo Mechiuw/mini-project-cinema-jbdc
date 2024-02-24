@@ -2,8 +2,7 @@ package com.team2.bioskop.service;
 
 import com.team2.bioskop.entity.Theater;
 import com.team2.bioskop.repositories.SeatRepositories;
-
-import java.sql.SQLException;
+import com.team2.bioskop.repositories.TheaterRepositories;
 
 public class SeatServiceImp implements SeatService {
     public void getAllSeat() {
@@ -58,8 +57,37 @@ public class SeatServiceImp implements SeatService {
             for (int i = 1; i <= stockSeatTheater; i++) {
                 SeatRepositories.addSeat(seatNumberPattern + i, theaterId);
             }
+
+            System.out.println(">>> ADDING SEAT IS SUCCESSFULLY <<<");
         } catch (Exception e) {
             System.out.println(e.getMessage());
+        }
+    }
+
+    public boolean createSeat(Theater theater) {
+        try {
+            int theaterId = theater.getId();
+            String theaterNumber = theater.getTheater_number();
+            int stockSeatTheater = theater.getStock();
+            int filmId = theater.getFilm_id();
+
+            String seatNumberPattern = "S-" + theaterNumber + "-";
+
+            Theater t = new Theater(theaterId, theaterNumber, stockSeatTheater + 1, filmId);
+
+            var listSeat = SeatRepositories.readAll();
+
+            String lastSeatNumber = listSeat.get(listSeat.size() - 1).getSeatNumber();
+            String[] lastSeatNumberSplit = lastSeatNumber.split("-");
+            int extractIndexSeat = Integer.parseInt(lastSeatNumberSplit[lastSeatNumberSplit.length - 1]);
+
+            SeatRepositories.addSeat(seatNumberPattern + (extractIndexSeat + 1), theaterId);
+            TheaterRepositories.updateData(t);
+
+            return true;
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            return false;
         }
     }
 

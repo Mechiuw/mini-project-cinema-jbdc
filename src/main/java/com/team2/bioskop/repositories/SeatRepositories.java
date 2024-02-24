@@ -11,7 +11,6 @@ import java.util.ArrayList;
 public class SeatRepositories {
     public static Seat addSeat(String seatNumber, int theaterId) {
         Seat seat;
-        // int lastId = Helper.getLastIdFromTable();
         try {
             var conn = DbConnector.connectToDb();
 
@@ -20,7 +19,6 @@ public class SeatRepositories {
                     VALUES (?, ?);
                     """;
             PreparedStatement pr = conn.prepareStatement(query);
-//            pr.setInt(1, lastId + 1);
             pr.setString(1, seatNumber);
             pr.setInt(2, theaterId);
             pr.executeUpdate();
@@ -69,6 +67,40 @@ public class SeatRepositories {
         }
     }
 
+    public static ArrayList<Seat> readAll(int theaterId) {
+        ArrayList<Seat> listSeat;
+        try {
+
+            listSeat = new ArrayList<>();
+            var conn = DbConnector.connectToDb();
+            String query = """
+                    SELECT * FROM m_seat s INNER JOIN 
+                    t_theater t ON s.theater_id = t.id;
+                    GROUP BY s.id;
+                    """;
+
+            PreparedStatement pr = conn.prepareStatement(query);
+            ResultSet rs = pr.executeQuery();
+            var meta = rs.getMetaData();
+
+            while (rs.next()) {
+                for (int i = 1; i <= meta.getColumnCount(); i++) {
+                    System.out.printf("%-20s", rs.getString(i));
+                }
+                Seat seat = new Seat(
+                        rs.getString(1),
+                        Integer.parseInt(rs.getString(3)));
+                listSeat.add(seat);
+                System.out.println();
+            }
+            pr.close();
+            rs.close();
+            conn.close();
+            return listSeat;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
     public static Seat readOne(int id) {
         try {
             var conn = DbConnector.connectToDb();
