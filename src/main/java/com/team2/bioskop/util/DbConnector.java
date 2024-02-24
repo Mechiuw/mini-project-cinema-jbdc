@@ -5,16 +5,10 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class DbConnector {
-<<<<<<< HEAD
     public static Connection connect;
-    public static Connection connect_to_db() throws SQLException {
-        final String JDBC_URL = "jdbc:postgresql://localhost:5432/db_bioskop";
-        final String USERNAME = System.getenv("DB_USERNAME");
-=======
     public static Connection connectToDb() throws SQLException {
-        final String JDBC_URL = "jdbc:postgresql://localhost:5432/ticket_db2";
+        final String JDBC_URL = "jdbc:postgresql://localhost:5432/db-bioskop";
         final String USERNAME = System.getenv("DB_USER");
->>>>>>> e23ee24b00cea36f98ff6626d5e9732d9073d340
         final String PASSWORD = System.getenv("DB_PASSWORD");
         connect = DriverManager.getConnection(JDBC_URL, USERNAME, PASSWORD);
 

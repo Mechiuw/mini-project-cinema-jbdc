@@ -13,7 +13,7 @@ public class RatingServiceImpl implements RatingService {
 
 
     public void addRatings(){
-        try (Connection connect = DbConnector.connect_to_db()){
+        try (Connection connect = DbConnector.connectToDb()){
             Scanner scan = new Scanner(System.in);
             showRule();
             System.out.println("choose one of these -> (A,BO,R,D)");
@@ -27,14 +27,14 @@ public class RatingServiceImpl implements RatingService {
         }
     }
     public void showRatings() {
-        try(Connection connect = DbConnector.connect_to_db()) {
+        try(Connection connect = DbConnector.connectToDb()) {
             RatingsRepositories.read(connect);
         }catch(SQLException e){
             System.out.println(e.getMessage());
         }
     }
     public void updateRatings(){
-        try (Connection connect = DbConnector.connect_to_db()) {
+        try (Connection connect = DbConnector.connectToDb()) {
             Scanner scan = new Scanner(System.in);
             System.out.println("insert previous movie rating code & description : ");
             String codeUpdateOld = scan.nextLine();
@@ -49,7 +49,7 @@ public class RatingServiceImpl implements RatingService {
         }
     }
     public void deleteRatings(){
-        try (Connection connect = DbConnector.connect_to_db()) {
+        try (Connection connect = DbConnector.connectToDb()) {
             Scanner scan = new Scanner(System.in);
             System.out.print("insert movie rating code : ");
             String deletionRating = scan.nextLine();
