@@ -13,6 +13,8 @@ public class TheaterServiceImpl {
     public static Theater addTheater() {
         Theater theater = null;
         try {
+            System.out.println("Input ID");
+            Integer id = input.nextInt();
             System.out.println("Input Theater Number");
             String theater_number = input.nextLine();
             System.out.println("Input Stock");
@@ -31,7 +33,7 @@ public class TheaterServiceImpl {
             System.out.println("Input Film ID");
             Integer film_id = input.nextInt();
 
-            TheaterRepositories.addData(new Theater(theater_number, stock, film_id));
+            TheaterRepositories.addData(new Theater(id, theater_number, stock, film_id));
             System.out.println("Successfully insert data");
             System.out.println("theater_number -> " + theater_number);
             System.out.println("stock -> " + stock);
