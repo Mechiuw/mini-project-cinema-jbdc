@@ -92,7 +92,8 @@ public class TheaterServiceImpl {
         return theater;
     }
 
-    public static void updateTheater(){
+    public static Theater updateTheater(){
+        Theater theater = null;
         try {
             System.out.println("Input Stock");
             int stock = -1;
@@ -112,7 +113,7 @@ public class TheaterServiceImpl {
             System.out.println("Input ID to Update");
             Integer id = input.nextInt();
 
-            TheaterRepositories.updateData(new Theater(stock, film_id, id));
+            theater = TheaterRepositories.updateData(new Theater(stock, film_id, id));
             System.out.println("Successfully update data");
             System.out.println("stock -> " + stock);
             System.out.println("film_id -> " + film_id);
@@ -120,6 +121,7 @@ public class TheaterServiceImpl {
         }catch (Exception e){
             System.out.println(e.getMessage());
         }
+        return theater;
     }
 
     public static void deleteTheater() {
