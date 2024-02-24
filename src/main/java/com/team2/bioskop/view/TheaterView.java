@@ -1,11 +1,7 @@
 package com.team2.bioskop.view;
 
-import com.team2.bioskop.service.TheaterService;
-import com.team2.bioskop.util.DbConnector;
+import com.team2.bioskop.service.TheaterServiceImpl;
 
-import java.io.IOException;
-import java.sql.Connection;
-import java.sql.SQLException;
 import java.util.Scanner;
 
 public class TheaterView {
@@ -24,10 +20,10 @@ public class TheaterView {
             int chooseFilm = input.nextInt();
             input.nextLine();
             switch (chooseFilm){
-                case 1 -> TheaterService.addTheater();
-                case 2 -> TheaterService.updateTheater();
-                case 3 -> TheaterService.deleteTheater();
-                case 4 -> TheaterService.readTheater();
+                case 1 -> TheaterServiceImpl.addTheater();
+                case 2 -> TheaterServiceImpl.updateTheater();
+                case 3 -> TheaterServiceImpl.deleteTheater();
+                case 4 -> TheaterServiceImpl.readTheater();
                 case 5 -> checkFilm = false;
                 default-> checkFilm = true;
             }
