@@ -42,8 +42,9 @@ public class TheaterService {
         }
     }
 
-    public static void readTheater() {
+    public static Theater readTheater() {
         ResultSet rs;
+        Theater theater = null;
         try {
             rs = TheaterRepositories.readData();
             System.out.println("ID | Theater Number | Stock | Title     |");
@@ -52,10 +53,14 @@ public class TheaterService {
                 System.out.print(rs.getString("theater_number") + "             | ");
                 System.out.print(rs.getString("stock") + "   | ");
                 System.out.println(rs.getString("title") + " | ");
+                theater.setId(rs.getInt("id"));
+                theater.setTheater_number(rs.getString("theater_number"));
+                theater.setStock(rs.getInt("stock"));
             }
         }catch (SQLException e){
             System.out.println(e.getMessage());
         }
+        return theater;
     }
 
     public static void updateTheater(){
