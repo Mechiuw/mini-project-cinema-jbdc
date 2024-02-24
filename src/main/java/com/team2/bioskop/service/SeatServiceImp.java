@@ -75,7 +75,7 @@ public class SeatServiceImp implements SeatService {
 
             Theater t = new Theater(theaterId, theaterNumber, stockSeatTheater + 1, filmId);
 
-            var listSeat = SeatRepositories.readAll();
+            var listSeat = SeatRepositories.readAll(theaterId);
 
             String lastSeatNumber = listSeat.get(listSeat.size() - 1).getSeatNumber();
             String[] lastSeatNumberSplit = lastSeatNumber.split("-");

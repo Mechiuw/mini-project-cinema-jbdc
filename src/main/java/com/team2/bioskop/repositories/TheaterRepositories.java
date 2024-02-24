@@ -45,6 +45,8 @@ public class TheaterRepositories {
         return rs;
     }
 
+
+
     public static Theater updateData(Theater theater) {
         try (Connection conn = DbConnector.connectToDb()) {
             String query = """
