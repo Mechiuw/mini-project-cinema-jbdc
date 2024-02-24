@@ -7,14 +7,24 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Scanner;
 
-public class TheaterServiceImpl {
+public class TheaterServiceImpl implements TheaterService{
     public static Scanner input = new Scanner(System.in);
 
     public static void addTheater() {
         Theater theater = null;
         try {
             System.out.println("Input ID");
-            Integer id = input.nextInt();
+            int id = -1;
+            while (id < 0) {
+                try {
+                    id = input.nextInt();
+                    if (id < 0) {
+                        System.out.println("Stock should be a non-negative integer. Please enter again:");
+                    }
+                }catch (Exception e) {
+                    System.out.println(e.getMessage());
+                }
+            }
             input.nextLine();
 
             System.out.println("Input Theater Number");
