@@ -22,10 +22,10 @@ public class SeatServiceImp implements SeatService {
             var seat = SeatRepositories.readOne(id);
             int idx = seat.getId();
             String seatNumber = seat.getSeatNumber();
-            String theaterNumber = seat.getTheaterNumber();
+            int theaterId = seat.getTheaterId();
             System.out.printf("%-20s%-20s%-20s\n", "id", "seat_number", "seat");
             System.out.println("-".repeat(50));
-            System.out.printf("%-20d%-20s%-20s", idx, seatNumber, theaterNumber);
+            System.out.printf("%-20d%-20s%-20s", idx, seatNumber, theaterId);
             return true;
         } catch (Exception e) {
             System.out.println("Seat not found");
@@ -34,9 +34,9 @@ public class SeatServiceImp implements SeatService {
         }
     }
 
-    public boolean createSeat(String seatNumber, String theaterNumber) {
+    public boolean createSeat(String seatNumber, int theaterId) {
         try {
-            SeatRepositories.addSeat(seatNumber, theaterNumber);
+            SeatRepositories.addSeat(seatNumber, theaterId);
             System.out.println(">>> Adding Success <<<");
             return true;
         } catch (Exception e) {
@@ -46,30 +46,29 @@ public class SeatServiceImp implements SeatService {
         }
     }
 
-    public boolean createManySeat(Theater theater) {
+    public void createManySeat(Theater theater) {
         try {
+
             int theaterId = theater.getId();
             String theaterNumber = theater.getTheater_number();
             int stockSeatTheater = theater.getStock();
 
-            String seatNumberPattern = "S-" + theaterId + "-";
+            String seatNumberPattern = "S-" + theaterNumber + "-";
 
             for (int i = 1; i <= stockSeatTheater; i++) {
-                createSeat(seatNumberPattern + i, theaterNumber);
+                SeatRepositories.addSeat(seatNumberPattern + i, theaterId);
             }
-            return true;
         } catch (Exception e) {
             System.out.println(e.getMessage());
-            return false;
         }
     }
 
-    public boolean updateSeat(int id, String seatNumber, String theaterNumber) {
+    public boolean updateSeat(int id, String seatNumber, int theaterId) {
         try {
             var seat = SeatRepositories.readOne(id);
             String uSeatNumber = (seatNumber.isEmpty()) ? seat.getSeatNumber() : seatNumber;
-            String uTheaterNumber = (theaterNumber.isEmpty()) ? seat.getTheaterNumber() : theaterNumber;
-            SeatRepositories.update(id, uSeatNumber, uTheaterNumber);
+            int uTheaterId = (theaterId <= 0) ? seat.getTheaterId() : theaterId;
+            SeatRepositories.update(id, uSeatNumber, uTheaterId);
             System.out.println(">>> UPDATE SUCCESSFULLY <<<");
             return true;
         } catch (Exception e) {

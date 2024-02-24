@@ -4,6 +4,7 @@ import com.team2.bioskop.entity.Theater;
 import com.team2.bioskop.repositories.SeatRepositories;
 import com.team2.bioskop.repositories.TheaterRepositories;
 import com.team2.bioskop.service.TheaterService;
+import com.team2.bioskop.service.TheaterServiceImpl;
 
 public class Main {
     public static void main(String[] args) {
@@ -13,8 +14,9 @@ public class Main {
 //        System.out.println(a.getSeatNumber());
 //        System.out.println(a.getTheaterNumber());
 //
-
-        TheaterService.addTheater();
-
+        // SeatRepositories.addSeat("S-11-222", 1);
+        // SeatRepositories.readAll();
+        TheaterServiceImpl.addTheater();
+        SeatRepositories.readAll();
     }
 }

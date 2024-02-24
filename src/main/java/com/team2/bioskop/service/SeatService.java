@@ -6,10 +6,10 @@ public interface SeatService {
     void getAllSeat();
 
     boolean getSeatById(int id);
-    boolean createSeat(String seatNumber, String theaterNumber);
+    boolean createSeat(String seatNumber, int theaterId);
 
-    boolean createManySeat(Theater theater);
+    void createManySeat(Theater theater);
 
-    boolean updateSeat(int id, String seatNumber, String theaterNumber);
+    boolean updateSeat(int id, String seatNumber, int theaterId);
     boolean deleteSeat(int id);
 }

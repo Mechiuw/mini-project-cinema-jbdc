@@ -10,11 +10,13 @@ import java.util.Scanner;
 public class TheaterServiceImpl {
     public static Scanner input = new Scanner(System.in);
 
-    public static Theater addTheater() {
+    public static void addTheater() {
         Theater theater = null;
         try {
             System.out.println("Input ID");
             Integer id = input.nextInt();
+            input.nextLine();
+
             System.out.println("Input Theater Number");
             String theater_number = input.nextLine();
             System.out.println("Input Stock");
@@ -33,15 +35,17 @@ public class TheaterServiceImpl {
             System.out.println("Input Film ID");
             Integer film_id = input.nextInt();
 
-            TheaterRepositories.addData(new Theater(id, theater_number, stock, film_id));
+            theater = TheaterRepositories.addData(new Theater(id, theater_number, stock, film_id));
             System.out.println("Successfully insert data");
             System.out.println("theater_number -> " + theater_number);
             System.out.println("stock -> " + stock);
             System.out.println("film_id -> " + film_id);
+
+            var seat = new SeatServiceImp();
+            seat.createManySeat(theater);
         }catch (Exception e){
             System.out.println(e.getMessage());
         }
-        return theater;
     }
 
     public static Theater readTheater() {

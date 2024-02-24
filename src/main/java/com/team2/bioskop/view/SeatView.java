@@ -50,9 +50,12 @@ public class SeatView {
                     String seatNumber = input.nextLine();
 
                     System.out.print("Enter Theater Number: ");
-                    String theaterNumber = input.nextLine();
+                    int theaterId;
+                    do {
+                        theaterId = ValidationInput.check(input.nextLine());
+                    } while (theaterId == -1);
 
-                    isSuccess = seatService.createSeat(seatNumber, theaterNumber);
+                    isSuccess = seatService.createSeat(seatNumber, theaterId);
                     System.out.println();
                 }
 
@@ -67,9 +70,12 @@ public class SeatView {
                     String seatNumber = input.nextLine();
 
                     System.out.print("Enter Theater Number: ");
-                    String theaterNumber = input.nextLine();
+                    int theaterId;
+                    do {
+                        theaterId = ValidationInput.check(input.nextLine());
+                    } while (theaterId == -1);
 
-                    isSuccess = seatService.updateSeat(id, seatNumber, theaterNumber);
+                    isSuccess = seatService.updateSeat(id, seatNumber, theaterId);
                     System.out.println();
 
                 }
