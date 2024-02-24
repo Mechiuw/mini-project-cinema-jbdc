@@ -6,6 +6,13 @@ public class Theater {
     private Integer stock;
     private Integer film_id;
 
+    public Theater(Integer id, String theater_number, Integer stock, Integer film_id) {
+        this.id = id;
+        this.theater_number = theater_number;
+        this.stock = stock;
+        this.film_id = film_id;
+    }
+
     public Theater(String theater_number, Integer stock, Integer film_id) {
         this.theater_number = theater_number;
         this.stock = stock;

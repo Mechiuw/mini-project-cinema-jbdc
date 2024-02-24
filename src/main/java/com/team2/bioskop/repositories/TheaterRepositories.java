@@ -12,20 +12,22 @@ import java.util.Scanner;
 public class TheaterRepositories {
     public static Scanner input = new Scanner(System.in);
 
-    public static void addData(Theater theater) {
+    public static Theater addData(Theater theater) {
         try (Connection conn = DbConnector.connectToDb()) {
             String query = """
-                    INSERT INTO t_theater (theater_number, stock, film_id)
-                    VALUES (?, ?, ?);
+                    INSERT INTO t_theater (id, theater_number, stock, film_id)
+                    VALUES (?, ?, ?, ?);
                     """;
             PreparedStatement pstmt = conn.prepareStatement(query);
-            pstmt.setString(1, theater.getTheater_number());
-            pstmt.setInt(2, theater.getStock());
-            pstmt.setInt(3, theater.getFilm_id());
+            pstmt.setInt(1, theater.getId());
+            pstmt.setString(2, theater.getTheater_number());
+            pstmt.setInt(3, theater.getStock());
+            pstmt.setInt(4, theater.getFilm_id());
             pstmt.executeUpdate();
         }catch (SQLException e) {
             throw new RuntimeException(e);
         }
+        return theater;
     }
 
     public static ResultSet readData() {
@@ -43,7 +45,7 @@ public class TheaterRepositories {
         return rs;
     }
 
-    public static void updateData(Theater theater) {
+    public static Theater updateData(Theater theater) {
         try (Connection conn = DbConnector.connectToDb()) {
             String query = """
                     UPDATE t_theater SET stock=?, film_id=?
@@ -57,6 +59,7 @@ public class TheaterRepositories {
         }catch (SQLException e) {
             throw new RuntimeException(e);
         }
+        return theater;
     }
 
     public static void deleteData(Theater theater) {
