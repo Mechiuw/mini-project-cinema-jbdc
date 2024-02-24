@@ -9,7 +9,7 @@ import java.util.List;
 
 public class FilmRepositories {
     public static void insert(Film film) {
-        try(Connection connection = DbConnector.connectToDb()){
+        try(Connection connection = DbConnector.connect_to_db()){
             connection.setAutoCommit(false);
 
             String sqlSelect = """
@@ -45,7 +45,7 @@ public class FilmRepositories {
     }
 
     public static void update(Film film, int id){
-        try(Connection connection = DbConnector.connectToDb()){
+        try(Connection connection = DbConnector.connect_to_db()){
             String sql = """
                     UPDATE t_film SET title = ?, duration = ?, show_date = ?,
                     price = ?, rating_id = ? WHERE id = ?;
@@ -66,7 +66,7 @@ public class FilmRepositories {
     }
 
     public static void delete (int id){
-        try(Connection connection = DbConnector.connectToDb()){
+        try(Connection connection = DbConnector.connect_to_db()){
             String sql = String.format("DELETE FROM t_film WHERE id = ?;");
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setInt(1, id);
@@ -79,7 +79,7 @@ public class FilmRepositories {
     }
 
     public static List<Film> getAllFilm(){
-        try(Connection connection = DbConnector.connectToDb()){
+        try(Connection connection = DbConnector.connect_to_db()){
             List <Film> films = new ArrayList<>() ;
             String sql = """
                     SELECT t_film.id, t_film.title, t_film.duration, t_film.show_date
