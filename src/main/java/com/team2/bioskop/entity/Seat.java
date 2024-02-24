@@ -5,14 +5,17 @@ public class Seat {
     private String seatNumber;
     private int theaterId;
 
-    public Seat(final int id, final String seatNumber, final int theaterId) {
-        this.id = id;
+    public Seat(final String seatNumber, final int theaterId) {
         this.seatNumber = seatNumber;
         this.theaterId = theaterId;
     }
 
     public int getId() {
         return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getSeatNumber() {

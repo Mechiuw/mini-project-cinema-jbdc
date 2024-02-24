@@ -1,30 +1,31 @@
 package com.team2.bioskop.repositories;
 
-import com.team2.bioskop.DbConfig;
 import com.team2.bioskop.entity.Seat;
+import com.team2.bioskop.util.DbConnector;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
-public class SeatRepository {
-    public static Seat addSeat(int id, String seatNumber, int theaterId) {
+public class SeatRepositories {
+    public static Seat addSeat(String seatNumber, int theaterId) {
         Seat seat;
         try {
-            var conn = DbConfig.connect();
+            var conn = DbConnector.connectToDb();
 
             String query = """
-                    INSERT INTO m_seat (id, seat_number, theater_id)
-                    VALUES (?, ?, ?);
+                    INSERT INTO m_seat (seat_number, theater_id)
+                    VALUES (?, ?);
                     """;
             PreparedStatement pr = conn.prepareStatement(query);
-            pr.setInt(1,id);
-            pr.setString(2, seatNumber);
-            pr.setInt(3, theaterId);
+            pr.setString(1, seatNumber);
+            pr.setInt(2, theaterId);
             pr.executeUpdate();
 
-            seat = new Seat(id, seatNumber, theaterId);
+            seat = new Seat(seatNumber, theaterId);
 
+            pr.close();
             conn.close();
             return seat;
 
@@ -33,9 +34,12 @@ public class SeatRepository {
         }
     }
 
-    public static void readAll() {
+    public static ArrayList<Seat> readAll() {
+        ArrayList<Seat> listSeat;
         try {
-            var conn = DbConfig.connect();
+
+            listSeat = new ArrayList<>();
+            var conn = DbConnector.connectToDb();
             String query = """
                     SELECT * FROM m_seat;
                     """;
@@ -48,19 +52,58 @@ public class SeatRepository {
                 for (int i = 1; i <= meta.getColumnCount(); i++) {
                     System.out.printf("%-20s", rs.getString(i));
                 }
+                Seat seat = new Seat(
+                        rs.getString(1),
+                        Integer.parseInt(rs.getString(3)));
+                listSeat.add(seat);
                 System.out.println();
             }
             pr.close();
             rs.close();
             conn.close();
+            return listSeat;
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
 
+    public static ArrayList<Seat> readAll(int theaterId) {
+        ArrayList<Seat> listSeat;
+        try {
+
+            listSeat = new ArrayList<>();
+            var conn = DbConnector.connectToDb();
+            String query = """
+                    SELECT * FROM m_seat s INNER JOIN 
+                    t_theater t ON s.theater_id = t.id;
+                    GROUP BY s.id;
+                    """;
+
+            PreparedStatement pr = conn.prepareStatement(query);
+            ResultSet rs = pr.executeQuery();
+            var meta = rs.getMetaData();
+
+            while (rs.next()) {
+                for (int i = 1; i <= meta.getColumnCount(); i++) {
+                    System.out.printf("%-20s", rs.getString(i));
+                }
+                Seat seat = new Seat(
+                        rs.getString(1),
+                        Integer.parseInt(rs.getString(3)));
+                listSeat.add(seat);
+                System.out.println();
+            }
+            pr.close();
+            rs.close();
+            conn.close();
+            return listSeat;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
     public static Seat readOne(int id) {
         try {
-            var conn = DbConfig.connect();
+            var conn = DbConnector.connectToDb();
             String query = """
                     SELECT * FROM m_seat WHERE id = ?;
                     """;
@@ -70,9 +113,9 @@ public class SeatRepository {
 
             Seat seat = null;
             if (rs.next()) {
-                seat = new Seat(Integer.parseInt(rs.getString(1)),
-                        rs.getString(2),
-                        Integer.parseInt(rs.getString(3)));
+                seat = new Seat(
+                        rs.getString(1),
+                        Integer.parseInt(rs.getString(2)));
             }
 
             pr.close();
@@ -86,9 +129,9 @@ public class SeatRepository {
 
     public static Seat update(int id, String seatNumber, int theaterId) {
         try {
-            var conn = DbConfig.connect();
+            var conn = DbConnector.connectToDb();
             String query = """
-                    UPDATE m_seat SET seat_number = ?, theater_id = ? WHERE id = ?; 
+                    UPDATE m_seat SET seat_number = ?, theater_number = ? WHERE id = ?; 
                     """;
 
             PreparedStatement pr = conn.prepareStatement(query);
@@ -97,7 +140,7 @@ public class SeatRepository {
             pr.setInt(3, id);
 
             pr.executeUpdate();
-            Seat seat = new Seat(id, seatNumber, theaterId);
+            Seat seat = new Seat(seatNumber, theaterId);
 
             pr.close();
             conn.close();
@@ -110,7 +153,7 @@ public class SeatRepository {
 
     public static void delete(int id) {
         try {
-            var conn = DbConfig.connect();
+            var conn = DbConnector.connectToDb();
             String query = """
                     DELETE FROM m_seat WHERE id = ?;
                     """;

@@ -1,7 +1,7 @@
 package com.team2.bioskop.view;
-
-import com.enigma.validation.ValidationInput;
+import com.team2.bioskop.service.SeatService;
 import com.team2.bioskop.service.SeatServiceImp;
+import com.team2.bioskop.util.Validation;
 
 import java.util.Scanner;
 
@@ -9,7 +9,7 @@ public class SeatView {
     public static void SeatMenu() {
         boolean isSuccess = true;
         boolean loop = true;
-        var seatService = new SeatServiceImp();
+        SeatService seatService = new SeatServiceImp();
         Scanner input = new Scanner(System.in);
 
         int choice;
@@ -22,7 +22,7 @@ public class SeatView {
             System.out.println("5. Delete Seat");
             System.out.println("0. Exit From Seat Page");
             System.out.print("Choice: ");
-            choice = ValidationInput.check(input.nextLine());
+            choice = Validation.checkNumberInput(input.nextLine());
             switch (choice) {
                 case 0 -> {
                     loop = false;
@@ -33,7 +33,7 @@ public class SeatView {
                     int id;
 
                     do {
-                        id = ValidationInput.check(input.nextLine());
+                        id = Validation.checkNumberInput(input.nextLine());
                     } while (id == -1);
 
                     isSuccess = seatService.getSeatById(id);
@@ -43,20 +43,19 @@ public class SeatView {
                     System.out.print("Enter Seat ID: ");
                     int id;
                     do {
-                        id = ValidationInput.check(input.nextLine());
+                        id = Validation.checkNumberInput(input.nextLine());
                     } while (id == -1);
 
                     System.out.print("Enter Seat Number: ");
                     String seatNumber = input.nextLine();
 
-                    System.out.print("Enter Theater ID: ");
+                    System.out.print("Enter Theater Number: ");
                     int theaterId;
-
                     do {
-                        theaterId = ValidationInput.check(input.nextLine());
+                        theaterId = Validation.checkNumberInput(input.nextLine());
                     } while (theaterId == -1);
 
-                    isSuccess = seatService.createSeat(id, seatNumber, theaterId);
+                    isSuccess = seatService.createSeat(seatNumber, theaterId);
                     System.out.println();
                 }
 
@@ -64,17 +63,16 @@ public class SeatView {
                     System.out.print("Enter Seat ID: ");
                     int id;
                     do {
-                        id = ValidationInput.check(input.nextLine());
+                        id = Validation.checkNumberInput(input.nextLine());
                     } while (id == -1);
 
                     System.out.print("Enter Seat Number: ");
                     String seatNumber = input.nextLine();
 
-                    System.out.print("Enter Theater ID: ");
+                    System.out.print("Enter Theater Number: ");
                     int theaterId;
-
                     do {
-                        theaterId = ValidationInput.check(input.nextLine());
+                        theaterId = Validation.checkNumberInput(input.nextLine());
                     } while (theaterId == -1);
 
                     isSuccess = seatService.updateSeat(id, seatNumber, theaterId);
@@ -85,7 +83,7 @@ public class SeatView {
                     System.out.print("Enter Seat ID: ");
                     int id;
                     do {
-                        id = ValidationInput.check(input.nextLine());
+                        id = Validation.checkNumberInput(input.nextLine());
                     } while (id == -1);
 
                     isSuccess = seatService.deleteSeat(id);
