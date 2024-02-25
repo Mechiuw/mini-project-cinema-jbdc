@@ -195,12 +195,12 @@ public class SeatRepositories {
         }
     }
 
-    public static void deleteByTheaterNumber(String theaternumber) {
+    public static void deleteByTheaterNumber(String theaterNumber) {
         try {
             var conn = DbConnector.connectToDb();
             String query = "DELETE FROM t_seat WHERE seat_number LIKE ?";
             PreparedStatement pr = conn.prepareStatement(query);
-            pr.setString(1, "%" + theaternumber + "%");
+            pr.setString(1, "%" + theaterNumber + "%");
             pr.executeUpdate();
             pr.close();
             conn.close();

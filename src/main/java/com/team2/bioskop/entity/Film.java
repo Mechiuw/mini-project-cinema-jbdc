@@ -28,6 +28,10 @@ public class Film {
         this.code = code;
     }
 
+    public Film (){
+
+    }
+
     public int getId() {
         return id;
     }

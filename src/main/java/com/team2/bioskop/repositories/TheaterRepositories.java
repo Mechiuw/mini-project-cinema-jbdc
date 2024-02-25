@@ -1,6 +1,5 @@
 package com.team2.bioskop.repositories;
 
-import com.team2.bioskop.entity.Seat;
 import com.team2.bioskop.entity.Theater;
 import com.team2.bioskop.util.DbConnector;
 
@@ -13,14 +12,13 @@ public class TheaterRepositories {
     public static Theater addData(Theater theater) {
         try (Connection conn = DbConnector.connectToDb()) {
             String query = """
-                    INSERT INTO t_theater (id, theater_number, stock, film_id)
-                    VALUES (?, ?, ?, ?);
+                    INSERT INTO t_theater (theater_number, stock, film_id)
+                    VALUES (?, ?, ?);
                     """;
             PreparedStatement pstmt = conn.prepareStatement(query);
-            pstmt.setInt(1, theater.getId());
-            pstmt.setString(2, theater.getTheater_number());
-            pstmt.setInt(3, theater.getStock());
-            pstmt.setInt(4, theater.getFilm_id());
+            pstmt.setString(1, theater.getTheater_number());
+            pstmt.setInt(2, theater.getStock());
+            pstmt.setInt(3, theater.getFilm_id());
             pstmt.executeUpdate();
         }catch (SQLException e) {
             throw new RuntimeException(e);
@@ -164,7 +162,7 @@ public class TheaterRepositories {
                 pstmt.setString(1, theater.getTheater_number());
                 int rowsAffected = pstmt.executeUpdate();
                 if (rowsAffected > 0) {
-                    System.out.println("Successfully deleted data");
+                    System.out.println();
                 } else {
                     System.out.println("No data found for deletion");
                 }

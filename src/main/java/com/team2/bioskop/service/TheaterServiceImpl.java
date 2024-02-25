@@ -3,10 +3,10 @@ package com.team2.bioskop.service;
 import com.team2.bioskop.entity.Theater;
 import com.team2.bioskop.repositories.SeatRepositories;
 import com.team2.bioskop.repositories.TheaterRepositories;
-import com.team2.bioskop.view.SeatView;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class TheaterServiceImpl implements TheaterService{
@@ -15,20 +15,6 @@ public class TheaterServiceImpl implements TheaterService{
     public static void addTheater() {
         Theater theater = null;
         try {
-            System.out.println("Input ID");
-            int id = -1;
-            while (id < 0) {
-                try {
-                    id = input.nextInt();
-                    if (id < 0) {
-                        System.out.println("Stock should be a non-negative integer. Please enter again:");
-                    }
-                }catch (Exception e) {
-                    System.out.println(e.getMessage());
-                }
-            }
-            input.nextLine();
-
             System.out.println("Input Theater Number");
             String theater_number = input.nextLine();
             System.out.println("Input Stock");
@@ -40,18 +26,34 @@ public class TheaterServiceImpl implements TheaterService{
                         System.out.println("Stock should be a non-negative integer. Please enter again:");
                     }
                 } catch (Exception e) {
-                    System.out.println("Invalid input. Stock should be a non-negative integer. Please enter again:");
+                    System.out.println("Invalid input. Stock must be an integer. Please enter again:");
                     input.next();
+                    stock = -1;
                 }
             }
-            System.out.println("Input Film ID");
-            Integer film_id = input.nextInt();
+            input.nextLine();
 
-            theater = TheaterRepositories.addData(new Theater(id, theater_number, stock, film_id));
+            System.out.println("Input Film ID");
+            int film_id = -1;
+            while (film_id <= 0) {
+                try {
+                    film_id = input.nextInt();
+                    if (film_id <= 0) {
+                        System.out.println("Stock should be a non-negative integer. Please enter again:");
+                    }
+                } catch (Exception e) {
+                    System.out.println("Invalid input. Stock must be an integer. Please enter again:");
+                    input.next();
+                    film_id = -1;
+                }
+            }
+            input.nextLine();
+
+            theater = TheaterRepositories.addData(new Theater(theater_number, stock, film_id));
             System.out.println("Successfully insert data");
-            System.out.println("theater_number -> " + theater_number);
-            System.out.println("stock -> " + stock);
-            System.out.println("film_id -> " + film_id);
+            System.out.println("| theater_number -> " + theater_number + " |");
+            System.out.println("| stock -> " + stock + " |");
+            System.out.println("| film_id -> " + film_id + " |");
 
             var seat = new SeatServiceImp();
             seat.createManySeat(theater);
@@ -88,12 +90,18 @@ public class TheaterServiceImpl implements TheaterService{
         try {
             rs = TheaterRepositories.readData();
 
-            System.out.println("ID | Theater Number | Stock | film_id     |");
+            if (!rs.isBeforeFirst()) {
+                System.out.println("No theaters found");
+                return null;
+            }
+
+            System.out.println("| ID  | Theater Number  | Stock  | film_id |");
             while (rs.next()) {
-                System.out.print(rs.getString("id") + "  | ");
-                System.out.print(rs.getString("theater_number") + "             | ");
-                System.out.print(rs.getString("stock") + "   | ");
-                System.out.println(rs.getString("film_id") + " | ");
+                System.out.printf("| %-4s| %-16s| %-7s| %-7s |%n",
+                        rs.getString("id"),
+                        rs.getString("theater_number"),
+                        rs.getString("stock"),
+                        rs.getString("film_id"));
                 theater = new Theater(rs.getString("stock"),
                         Integer.parseInt(rs.getString("film_id")),
                         Integer.parseInt(rs.getString("id")));
@@ -186,7 +194,7 @@ public class TheaterServiceImpl implements TheaterService{
             TheaterRepositories.deleteData(new Theater(theater_number));
             System.out.println("Succesfully delete data");
         }catch (Exception e) {
-            System.out.println(e.getMessage());
+            System.out.println("Theater is in transaction");
         }
     }
 }
