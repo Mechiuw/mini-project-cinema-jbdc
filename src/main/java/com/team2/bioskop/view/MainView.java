@@ -13,7 +13,7 @@ public class MainView {
             System.out.println("1. CUSTOMER");
             System.out.println("2. ADMIN");
             System.out.println("3. TRANSACTION");
-            System.out.println("3. EXIT");
+            System.out.println("4. EXIT");
             System.out.println("=================================================");
             System.out.println("Choose Menu : ");
             int chooseMenu = input.nextInt();
