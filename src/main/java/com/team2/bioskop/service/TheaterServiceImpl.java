@@ -148,6 +148,8 @@ public class TheaterServiceImpl implements TheaterService{
         try {
             System.out.println("Input ID to Update");
             Integer id = input.nextInt();
+            input.nextLine();
+
             System.out.println("Input Stock");
             int stock = -1;
             while (stock < 0) {
@@ -169,16 +171,16 @@ public class TheaterServiceImpl implements TheaterService{
                 return null;
             }
 
-            SeatRepositories.deleteByTheaterNumber(t.getTheater_number());
             theater = TheaterRepositories.updateData(new Theater(t.getId(),
                     t.getTheater_number(),
-                    stock,
+                    stock + t.getStock(),
                     t.getFilm_id()));
 
 
             String seatNumberPattern = "S-" + t.getTheater_number() + "-";
             for (int i = 1; i <= stock; i++) {
-                SeatRepositories.addSeat(seatNumberPattern + i, t.getId());
+                SeatRepositories.addSeat(seatNumberPattern + (theater.getStock() + i),
+                        theater.getId());
             }
         }catch (Exception e){
             System.out.println(e.getMessage());
