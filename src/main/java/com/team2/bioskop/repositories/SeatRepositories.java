@@ -114,8 +114,36 @@ public class SeatRepositories {
             Seat seat = null;
             if (rs.next()) {
                 seat = new Seat(
-                        rs.getString(1),
-                        Integer.parseInt(rs.getString(2)));
+                        Integer.parseInt(rs.getString(1)),
+                        rs.getString(2),
+                        Integer.parseInt(rs.getString(3)));
+            }
+
+            pr.close();
+            rs.close();
+            conn.close();
+            return seat;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static Seat readOne(String seatNumber) {
+        try {
+            var conn = DbConnector.connectToDb();
+            String query = """
+                    SELECT * FROM m_seat WHERE seat_number = ?;
+                    """;
+            PreparedStatement pr = conn.prepareStatement(query);
+            pr.setString(1, seatNumber);
+            ResultSet rs = pr.executeQuery();
+
+            Seat seat = null;
+            if (rs.next()) {
+                seat = new Seat(
+                        Integer.parseInt(rs.getString(1)),
+                        rs.getString(2),
+                        Integer.parseInt(rs.getString(3)));
             }
 
             pr.close();
@@ -131,7 +159,7 @@ public class SeatRepositories {
         try {
             var conn = DbConnector.connectToDb();
             String query = """
-                    UPDATE m_seat SET seat_number = ?, theater_number = ? WHERE id = ?; 
+                    UPDATE m_seat SET seat_number = ?, theater_id = ? WHERE id = ?; 
                     """;
 
             PreparedStatement pr = conn.prepareStatement(query);
@@ -166,4 +194,5 @@ public class SeatRepositories {
             throw new RuntimeException(e);
         }
     }
+
 }

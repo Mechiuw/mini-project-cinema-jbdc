@@ -74,6 +74,34 @@ public class TheaterRepositories {
         }
     }
 
+    public static Theater readDataById(int id) {
+        try {
+            var conn = DbConnector.connectToDb();
+            String query = """
+                    SELECT * FROM t_theater WHERE id = ?;
+                    """;
+            PreparedStatement pr = conn.prepareStatement(query);
+            pr.setInt(1, id);
+            ResultSet rs = pr.executeQuery();
+
+            Theater theater = null;
+            if (rs.next()) {
+                theater = new Theater(
+                        Integer.parseInt(rs.getString(1)),
+                        rs.getString(2),
+                        Integer.parseInt(rs.getString(3)),
+                        Integer.parseInt(rs.getString(4)));
+            }
+
+            pr.close();
+            rs.close();
+            conn.close();
+            return theater;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
 
 
     public static Theater updateData(Theater theater) {
