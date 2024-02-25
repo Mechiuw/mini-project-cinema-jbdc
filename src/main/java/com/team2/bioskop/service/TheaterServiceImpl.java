@@ -3,7 +3,6 @@ package com.team2.bioskop.service;
 import com.team2.bioskop.entity.Theater;
 import com.team2.bioskop.repositories.SeatRepositories;
 import com.team2.bioskop.repositories.TheaterRepositories;
-import com.team2.bioskop.view.SeatView;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -16,22 +15,6 @@ public class TheaterServiceImpl implements TheaterService{
     public static void addTheater() {
         Theater theater = null;
         try {
-            System.out.println("Input ID");
-            int id = -1;
-            while (id <= 0) {
-                try {
-                    id = input.nextInt();
-                    if (id <= 0) {
-                        System.out.println("ID should be a positive integer. Please enter again:");
-                    }
-                } catch (InputMismatchException e) {
-                    System.out.println("Invalid input. ID must be an integer. Please enter again:");
-                    input.next();
-                    id = -1;
-                }
-            }
-            input.nextLine();
-
             System.out.println("Input Theater Number");
             String theater_number = input.nextLine();
             System.out.println("Input Stock");
@@ -66,7 +49,7 @@ public class TheaterServiceImpl implements TheaterService{
             }
             input.nextLine();
 
-            theater = TheaterRepositories.addData(new Theater(id, theater_number, stock, film_id));
+            theater = TheaterRepositories.addData(new Theater(theater_number, stock, film_id));
             System.out.println("Successfully insert data");
             System.out.println("| theater_number -> " + theater_number + " |");
             System.out.println("| stock -> " + stock + " |");
@@ -211,7 +194,7 @@ public class TheaterServiceImpl implements TheaterService{
             TheaterRepositories.deleteData(new Theater(theater_number));
             System.out.println("Succesfully delete data");
         }catch (Exception e) {
-            System.out.println(e.getMessage());
+            throw new RuntimeException("Theater is in transaction");
         }
     }
 }
