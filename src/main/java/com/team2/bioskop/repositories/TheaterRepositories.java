@@ -4,10 +4,7 @@ import com.team2.bioskop.entity.Seat;
 import com.team2.bioskop.entity.Theater;
 import com.team2.bioskop.util.DbConnector;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.Scanner;
 
 public class TheaterRepositories {
@@ -102,7 +99,36 @@ public class TheaterRepositories {
         }
     }
 
+    public static void readTheater(int filmId){
+        ResultSet rs = null;
+        try (Connection conn = DbConnector.connectToDb()) {
+            String query = """
+                select t.theater_number, t.stock, f.price from t_theater t
+                join t_film f on t.film_id = f.id
+                where f.id = ?;
+                """;
+            PreparedStatement pstmt = conn.prepareStatement(query);
+            pstmt.setInt(1, filmId);
+            rs = pstmt.executeQuery();
+            ResultSetMetaData metaData = rs.getMetaData();
+            int columnCount = metaData.getColumnCount();
 
+            for(int i = 1 ; i <= columnCount; i++){
+                System.out.printf("|%-18s ", metaData.getColumnName(i));
+            }
+
+            System.out.print(" |\n");
+            while (rs.next()) {
+                System.out.printf("| %-18s", rs.getString("theater_number"));
+                System.out.printf("| %-18s", rs.getString("stock"));
+                System.out.printf("| %-18s |", rs.getString("price"));
+                System.out.println();
+            }
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
     public static Theater updateData(Theater theater) {
         try (Connection conn = DbConnector.connectToDb()) {
@@ -110,11 +136,21 @@ public class TheaterRepositories {
                     UPDATE t_theater SET stock=?, film_id=?
                     WHERE id=?;
                     """;
-            PreparedStatement pstmt = conn.prepareStatement(query);
-            pstmt.setInt(1, theater.getStock());
-            pstmt.setInt(2, theater.getFilm_id());
-            pstmt.setInt(3, theater.getId());
-            pstmt.executeUpdate();
+            try (PreparedStatement pstmt = conn.prepareStatement(query)) {
+                pstmt.setInt(1, theater.getStock());
+                pstmt.setInt(2, theater.getFilm_id());
+                pstmt.setInt(3, theater.getId());
+                int rowsAffected = pstmt.executeUpdate();
+                if (rowsAffected > 0) {
+                    System.out.println("Successfully update data");
+                    System.out.println("for id -> " + theater.getId());
+                    System.out.println("stock -> " + theater.getStock());
+                    System.out.println("film_id -> " + theater.getFilm_id());
+                } else {
+                    System.out.println("No data found for update");
+                }
+            }
+
         }catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -124,11 +160,17 @@ public class TheaterRepositories {
     public static void deleteData(Theater theater) {
         try (Connection conn = DbConnector.connectToDb()) {
             String query = "DELETE FROM t_theater WHERE theater_number=?";
-            PreparedStatement pstmt = conn.prepareStatement(query);
-            pstmt.setString(1, theater.getTheater_number());
-            pstmt.executeUpdate();
+            try (PreparedStatement pstmt = conn.prepareStatement(query)) {
+                pstmt.setString(1, theater.getTheater_number());
+                int rowsAffected = pstmt.executeUpdate();
+                if (rowsAffected > 0) {
+                    System.out.println("Successfully deleted data");
+                } else {
+                    System.out.println("No data found for deletion");
+                }
+            }
         }catch (SQLException e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException();
         }
     }
 }

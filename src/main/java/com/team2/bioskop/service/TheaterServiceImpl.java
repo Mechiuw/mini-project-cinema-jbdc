@@ -1,6 +1,7 @@
 package com.team2.bioskop.service;
 
 import com.team2.bioskop.entity.Theater;
+import com.team2.bioskop.repositories.SeatRepositories;
 import com.team2.bioskop.repositories.TheaterRepositories;
 
 import java.sql.ResultSet;
@@ -105,6 +106,8 @@ public class TheaterServiceImpl implements TheaterService{
     public static Theater updateTheater(){
         Theater theater = null;
         try {
+            System.out.println("Input ID to Update");
+            Integer id = input.nextInt();
             System.out.println("Input Stock");
             int stock = -1;
             while (stock < 0) {
@@ -120,14 +123,9 @@ public class TheaterServiceImpl implements TheaterService{
             }
             System.out.println("Input Film ID");
             Integer film_id = input.nextInt();
-            System.out.println("Input ID to Update");
-            Integer id = input.nextInt();
 
             theater = TheaterRepositories.updateData(new Theater(stock, film_id, id));
-            System.out.println("Successfully update data");
-            System.out.println("stock -> " + stock);
-            System.out.println("film_id -> " + film_id);
-            System.out.println("for id -> " + film_id);
+
         }catch (Exception e){
             System.out.println(e.getMessage());
         }
@@ -138,7 +136,7 @@ public class TheaterServiceImpl implements TheaterService{
         try {
             System.out.println("Input Theater Number to Delete");
             String theater_number = input.nextLine();
-
+            SeatRepositories.deleteByTheaterNumber(theater_number);
             TheaterRepositories.deleteData(new Theater(theater_number));
             System.out.println("Succesfully delete data");
         }catch (Exception e) {
