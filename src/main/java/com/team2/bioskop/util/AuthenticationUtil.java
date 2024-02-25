@@ -32,8 +32,6 @@ public class AuthenticationUtil {
                 userInput();
             }
 
-
-
         }  catch ( SQLException e ){
             System.out.println(e.getMessage());
         }
