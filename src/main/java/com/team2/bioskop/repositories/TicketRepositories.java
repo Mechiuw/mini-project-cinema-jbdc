@@ -32,15 +32,17 @@ public class TicketRepositories {
             }
 
             String sqlSeat = """
-                    SELECT id FROM t_seat WHERE seat_number = ?;
+                    SELECT * FROM t_seat WHERE seat_number = ?;
                     """;
 
             PreparedStatement preparedStatementSeat = connection.prepareStatement(sqlSeat);
             preparedStatementSeat.setString(1, seatId);
             ResultSet resultSet1 = preparedStatementSeat.executeQuery();
             int result1 = 0;
+            int theaterId = 0;
             if(resultSet1.next()){
                 result1 = resultSet1.getInt("id");
+                theaterId = resultSet1.getInt("theater_id");
             }
 
             String sql = """
@@ -55,16 +57,30 @@ public class TicketRepositories {
             ticket.setCustomer_id(result);
             ticket.setSeat_id(result1);
 
+            String queryTheater = """
+                    SELECT stock FROM t_theater WHERE id = ?
+                    """;
+
+            PreparedStatement pr = connection.prepareStatement(queryTheater);
+            pr.setInt(1, theaterId);
+            ResultSet rs = pr.executeQuery();
+
+            int stock = 0;
+            if (rs.next()) {
+                stock = rs.getInt("stock");
+            }
+
             String sqlUpdate = """
                     UPDATE t_theater 
-                    SET stock = stock - 1 
+                    SET stock = ? 
                     WHERE id = (
                         SELECT theater_id 
                         FROM t_seat
                         WHERE id =? );
                     """;
             PreparedStatement preparedStatementUpdate = connection.prepareStatement(sqlUpdate);
-            preparedStatementUpdate.setInt(1, ticket.getSeat_id());
+            preparedStatementUpdate.setInt(1, (stock - 1 < 0) ? 0 : stock - 1);
+            preparedStatementUpdate.setInt(2, ticket.getSeat_id());
             preparedStatementUpdate.executeUpdate();
 
             preparedStatementUpdate.close();
