@@ -159,7 +159,7 @@ public class SeatServiceImp implements SeatService {
             System.out.println(">>> DELETE SUCCESSFULLY <<<");
             return true;
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            System.out.println("Seat has been registered in the transaction");
             return false;
         }
     }
