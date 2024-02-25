@@ -194,7 +194,7 @@ public class TheaterServiceImpl implements TheaterService{
             TheaterRepositories.deleteData(new Theater(theater_number));
             System.out.println("Succesfully delete data");
         }catch (Exception e) {
-            throw new RuntimeException("Theater is in transaction");
+            System.out.println("Theater is in transaction");
         }
     }
 }
