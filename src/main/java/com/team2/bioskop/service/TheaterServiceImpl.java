@@ -1,20 +1,31 @@
 package com.team2.bioskop.service;
 
 import com.team2.bioskop.entity.Theater;
+import com.team2.bioskop.repositories.SeatRepositories;
 import com.team2.bioskop.repositories.TheaterRepositories;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Scanner;
 
-public class TheaterServiceImpl {
+public class TheaterServiceImpl implements TheaterService{
     public static Scanner input = new Scanner(System.in);
 
     public static void addTheater() {
         Theater theater = null;
         try {
             System.out.println("Input ID");
-            Integer id = input.nextInt();
+            int id = -1;
+            while (id < 0) {
+                try {
+                    id = input.nextInt();
+                    if (id < 0) {
+                        System.out.println("Stock should be a non-negative integer. Please enter again:");
+                    }
+                }catch (Exception e) {
+                    System.out.println(e.getMessage());
+                }
+            }
             input.nextLine();
 
             System.out.println("Input Theater Number");
@@ -95,6 +106,8 @@ public class TheaterServiceImpl {
     public static Theater updateTheater(){
         Theater theater = null;
         try {
+            System.out.println("Input ID to Update");
+            Integer id = input.nextInt();
             System.out.println("Input Stock");
             int stock = -1;
             while (stock < 0) {
@@ -110,14 +123,9 @@ public class TheaterServiceImpl {
             }
             System.out.println("Input Film ID");
             Integer film_id = input.nextInt();
-            System.out.println("Input ID to Update");
-            Integer id = input.nextInt();
 
             theater = TheaterRepositories.updateData(new Theater(stock, film_id, id));
-            System.out.println("Successfully update data");
-            System.out.println("stock -> " + stock);
-            System.out.println("film_id -> " + film_id);
-            System.out.println("for id -> " + film_id);
+
         }catch (Exception e){
             System.out.println(e.getMessage());
         }
@@ -128,7 +136,7 @@ public class TheaterServiceImpl {
         try {
             System.out.println("Input Theater Number to Delete");
             String theater_number = input.nextLine();
-
+            SeatRepositories.deleteByTheaterNumber(theater_number);
             TheaterRepositories.deleteData(new Theater(theater_number));
             System.out.println("Succesfully delete data");
         }catch (Exception e) {

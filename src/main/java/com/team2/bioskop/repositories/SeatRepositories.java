@@ -1,7 +1,6 @@
 package com.team2.bioskop.repositories;
 
 import com.team2.bioskop.entity.Seat;
-import com.team2.bioskop.entity.Theater;
 import com.team2.bioskop.util.DbConnector;
 
 import java.sql.PreparedStatement;
@@ -16,7 +15,7 @@ public class SeatRepositories {
             var conn = DbConnector.connectToDb();
 
             String query = """
-                    INSERT INTO m_seat (seat_number, theater_id)
+                    INSERT INTO t_seat (seat_number, theater_id)
                     VALUES (?, ?);
                     """;
             PreparedStatement pr = conn.prepareStatement(query);
@@ -42,7 +41,7 @@ public class SeatRepositories {
             listSeat = new ArrayList<>();
             var conn = DbConnector.connectToDb();
             String query = """
-                    SELECT * FROM m_seat;
+                    SELECT * FROM t_seat;
                     """;
 
             PreparedStatement pr = conn.prepareStatement(query);
@@ -74,7 +73,7 @@ public class SeatRepositories {
             listSeat = new ArrayList<>();
             var conn = DbConnector.connectToDb();
             String query = """
-                    SELECT * FROM m_seat WHERE theater_id = ?;
+                    SELECT * FROM t_seat WHERE theater_id = ?;
                     """;
 
             PreparedStatement pr = conn.prepareStatement(query);
@@ -106,7 +105,7 @@ public class SeatRepositories {
         try {
             var conn = DbConnector.connectToDb();
             String query = """
-                    SELECT * FROM m_seat WHERE id = ?;
+                    SELECT * FROM t_seat WHERE id = ?;
                     """;
             PreparedStatement pr = conn.prepareStatement(query);
             pr.setInt(1, id);
@@ -133,7 +132,7 @@ public class SeatRepositories {
         try {
             var conn = DbConnector.connectToDb();
             String query = """
-                    SELECT * FROM m_seat WHERE seat_number = ?;
+                    SELECT * FROM t_seat WHERE seat_number = ?;
                     """;
             PreparedStatement pr = conn.prepareStatement(query);
             pr.setString(1, seatNumber);
@@ -160,7 +159,7 @@ public class SeatRepositories {
         try {
             var conn = DbConnector.connectToDb();
             String query = """
-                    UPDATE m_seat SET seat_number = ?, theater_id = ? WHERE id = ?; 
+                    UPDATE t_seat SET seat_number = ?, theater_id = ? WHERE id = ?; 
                     """;
 
             PreparedStatement pr = conn.prepareStatement(query);
@@ -184,7 +183,7 @@ public class SeatRepositories {
         try {
             var conn = DbConnector.connectToDb();
             String query = """
-                    DELETE FROM m_seat WHERE id = ?;
+                    DELETE FROM t_seat WHERE id = ?;
                     """;
             PreparedStatement pr = conn.prepareStatement(query);
             pr.setInt(1, id);
@@ -196,14 +195,12 @@ public class SeatRepositories {
         }
     }
 
-    public static void delete(Theater theater) {
+    public static void deleteByTheaterNumber(String theaternumber) {
         try {
             var conn = DbConnector.connectToDb();
-            String query = """
-                    DELETE FROM m_seat WHERE theater_id = ?;
-                    """;
+            String query = "DELETE FROM t_seat WHERE seat_number LIKE ?";
             PreparedStatement pr = conn.prepareStatement(query);
-            pr.setInt(1, theater.getId());
+            pr.setString(1, "%" + theaternumber + "%");
             pr.executeUpdate();
             pr.close();
             conn.close();
@@ -211,5 +208,5 @@ public class SeatRepositories {
             throw new RuntimeException(e);
         }
     }
-
 }
+

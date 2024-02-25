@@ -29,6 +29,9 @@ public class Theater {
         this.theater_number = theaterNumber;
     }
 
+    public Theater() {
+    }
+
     public Integer getId() {
         return id;
     }
