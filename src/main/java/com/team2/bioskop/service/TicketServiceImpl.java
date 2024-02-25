@@ -3,10 +3,8 @@ package com.team2.bioskop.service;
 import com.team2.bioskop.entity.Customer;
 import com.team2.bioskop.entity.Theater;
 import com.team2.bioskop.entity.Ticket;
-import com.team2.bioskop.repositories.CustomerRepositories;
 import com.team2.bioskop.repositories.TheaterRepositories;
 import com.team2.bioskop.repositories.TicketRepositories;
-import com.team2.bioskop.util.BuyTicketUtil;
 import com.team2.bioskop.util.CustomerUtil;
 import com.team2.bioskop.view.InvoiceView;
 
@@ -47,11 +45,6 @@ public class TicketServiceImpl implements TicketService{
                 System.out.println("Theater is not found");
             }
         } while (theater == null);
-
-        if (BuyTicketUtil.checkRemindStockSeat(theaterNumber)) {
-            System.out.println("Seat stock has run out");
-            return;
-        }
 
         TicketRepositories.showTicketAvailable(theaterNumber);
 
