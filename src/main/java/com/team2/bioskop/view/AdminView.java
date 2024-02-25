@@ -23,7 +23,7 @@ public class AdminView {
             switch (chooseAdmin){
                 case 1 -> FilmView.view();
                 case 2 -> TheaterView.view();
-                case 3 -> RatingView.view();
+                case 3 -> SeatView.SeatMenu();
                 case 4 -> RatingView.view();
                 case 5 -> checkAdmin = false;
                 default-> checkAdmin = true;

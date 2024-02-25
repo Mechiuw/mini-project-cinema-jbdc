@@ -2,6 +2,8 @@ package com.team2.bioskop.service;
 
 import com.team2.bioskop.entity.Film;
 import com.team2.bioskop.repositories.FilmRepositories;
+import com.team2.bioskop.util.CustomerUtil;
+import com.team2.bioskop.util.FilmUtil;
 import com.team2.bioskop.util.Validation;
 
 import java.sql.Date;
@@ -39,9 +41,18 @@ public class FilmServiceImpl implements FilmService{
 
     public void updateFilm(){
         FilmRepositories.showAllFilm();
-        System.out.println("Input ID Film Update : ");
-        int id = input.nextInt();
-        input.nextLine();
+        Film film = null;
+        int id;
+        do {
+            System.out.println("Input ID Film Update : ");
+            id = input.nextInt();
+            input.nextLine();
+            film = FilmUtil.readFilmId(id);
+            if(film == null){
+                System.out.println("FILM NOT FOUND");
+            }
+        } while (film == null);
+
 
         System.out.println("Input Film Tittle : ");
         String tittle = input.nextLine();
@@ -66,7 +77,7 @@ public class FilmServiceImpl implements FilmService{
         int rating = input.nextInt();
         input.nextLine();
 
-        Film film = new Film(tittle, duration, showDate, price, rating);
+        film = new Film(tittle, duration, showDate, price, rating);
         FilmRepositories.update(film, id);
     }
 

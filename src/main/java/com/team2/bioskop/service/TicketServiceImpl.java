@@ -20,7 +20,7 @@ public class TicketServiceImpl implements TicketService{
         String customerName;
         do {
             System.out.println("Input Your Name : ");
-             customerName = input.nextLine();
+            customerName = input.nextLine();
             customer = CustomerUtil.readCustomerByName(customerName);
             if (customer == null) {
                 System.out.println("Customer is not found");
