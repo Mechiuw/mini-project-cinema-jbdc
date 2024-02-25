@@ -52,7 +52,6 @@ public class SeatServiceImp implements SeatService {
 
     public void createManySeat(Theater theater) {
         try {
-
             int theaterId = theater.getId();
             String theaterNumber = theater.getTheater_number();
             int stockSeatTheater = theater.getStock();
