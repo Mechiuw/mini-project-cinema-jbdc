@@ -16,12 +16,10 @@ public class SeatView {
         int choice;
         do {
             System.out.println("SEAT MENU: ");
-            System.out.println("1. Get All Seat");
-            System.out.println("2. Get Seat By Id");
-            System.out.println("3. Create Seat");
-            System.out.println("4. Update Seat");
-            System.out.println("5. Delete Seat");
-            System.out.println("0. Exit From Seat Page");
+            System.out.println("1. GET ALL SEAT");
+            System.out.println("2. CREATE SEAT");
+            System.out.println("3. DELETE SEAT");
+            System.out.println("0. EXIT FROM SEAT PAGE");
             System.out.print("Choice: ");
             choice = Validation.checkNumberInput(input.nextLine());
             switch (choice) {
@@ -33,18 +31,6 @@ public class SeatView {
                     System.out.println();
                 }
                 case 2 -> {
-                    System.out.print("Enter Seat ID: ");
-                    int id;
-
-                    do {
-                        id = Validation.checkNumberInput(input.nextLine());
-                    } while (id == -1);
-
-                    isSuccess = seatService.getSeatById(id);
-                    System.out.println();
-                    System.out.println();
-                }
-                case 3 -> {
                     System.out.print("Enter Theater Number: ");
                     String theaterNumber = input.nextLine();
                     var theater = TheaterRepositories.readDataByTheaterNumber(theaterNumber);
@@ -55,28 +41,7 @@ public class SeatView {
                     }
                     System.out.println();
                 }
-
-                case 4 -> {
-                    System.out.print("Enter Seat ID: ");
-                    int id;
-                    do {
-                        id = Validation.checkNumberInput(input.nextLine());
-                    } while (id == -1);
-
-                    System.out.print("Enter Seat Number: ");
-                    String seatNumber = input.nextLine();
-
-                    System.out.print("Enter Theater Number: ");
-                    int theaterId;
-                    do {
-                        theaterId = Validation.checkNumberInput(input.nextLine());
-                    } while (theaterId == -1);
-
-                    isSuccess = seatService.updateSeat(id, seatNumber, theaterId);
-                    System.out.println();
-
-                }
-                case 5 -> {
+                case 3 -> {
                     System.out.print("Enter Seat Number: ");
                     String seatNumber = input.nextLine();
                     isSuccess = seatService.deleteSeat(seatNumber);

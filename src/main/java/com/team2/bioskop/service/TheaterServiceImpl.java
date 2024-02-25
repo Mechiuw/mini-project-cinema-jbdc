@@ -3,6 +3,7 @@ package com.team2.bioskop.service;
 import com.team2.bioskop.entity.Theater;
 import com.team2.bioskop.repositories.SeatRepositories;
 import com.team2.bioskop.repositories.TheaterRepositories;
+import com.team2.bioskop.view.SeatView;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -124,8 +125,53 @@ public class TheaterServiceImpl implements TheaterService{
             System.out.println("Input Film ID");
             Integer film_id = input.nextInt();
 
+            TheaterRepositories.readDataById(id);
+
             theater = TheaterRepositories.updateData(new Theater(stock, film_id, id));
 
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+        }
+        return theater;
+    }
+
+    public static Theater updateTheaterStock(){
+        Theater theater = null;
+        try {
+            System.out.println("Input ID to Update");
+            Integer id = input.nextInt();
+            System.out.println("Input Stock");
+            int stock = -1;
+            while (stock < 0) {
+                try {
+                    stock = input.nextInt();
+                    if (stock < 0) {
+                        System.out.println("Stock should be a non-negative integer. Please enter again:");
+                    }
+                } catch (Exception e) {
+                    System.out.println("Invalid input. Stock should be a non-negative integer. Please enter again:");
+                    input.next();
+                }
+            }
+
+            var t = TheaterRepositories.readDataById(id);
+
+            if (t == null) {
+                System.out.println("Theater not found");
+                return null;
+            }
+
+            SeatRepositories.deleteByTheaterNumber(t.getTheater_number());
+            theater = TheaterRepositories.updateData(new Theater(t.getId(),
+                    t.getTheater_number(),
+                    stock,
+                    t.getFilm_id()));
+
+
+            String seatNumberPattern = "S-" + t.getTheater_number() + "-";
+            for (int i = 1; i <= stock; i++) {
+                SeatRepositories.addSeat(seatNumberPattern + i, t.getId());
+            }
         }catch (Exception e){
             System.out.println(e.getMessage());
         }
