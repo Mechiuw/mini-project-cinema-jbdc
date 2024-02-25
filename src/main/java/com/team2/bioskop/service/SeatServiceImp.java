@@ -52,14 +52,21 @@ public class SeatServiceImp implements SeatService {
 
     public void createManySeat(Theater theater) {
         try {
-            int theaterId = theater.getId();
-            String theaterNumber = theater.getTheater_number();
-            int stockSeatTheater = theater.getStock();
+            var t = TheaterRepositories.readDataByTheaterNumber(theater.getTheater_number());
+
+            if (t == null) {
+                System.out.println("Theater is not found");
+                return;
+            }
+
+            String theaterNumber = t.getTheater_number();
+            int stockSeatTheater = t.getStock();
+
 
             String seatNumberPattern = "S-" + theaterNumber + "-";
 
             for (int i = 1; i <= stockSeatTheater; i++) {
-                SeatRepositories.addSeat(seatNumberPattern + i, theaterId);
+                SeatRepositories.addSeat(seatNumberPattern + i, t.getId());
             }
 
             System.out.println(">>> CREATE SEAT SUCCESSFULLY <<<");
