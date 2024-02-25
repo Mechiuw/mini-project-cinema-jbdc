@@ -86,7 +86,8 @@ public class FilmRepositories {
                     ,t_film.price ,t_rating.code
                     FROM t_film
                         JOIN t_rating ON t_film.rating_id = t_rating.id
-                    GROUP BY t_film.id, t_rating.code;
+                    GROUP BY t_film.id, t_rating.code
+                    ORDER BY t_film.id ASC;
                     """;
 
             Statement statement = connection.createStatement();
@@ -121,6 +122,23 @@ public class FilmRepositories {
             System.out.printf("| %-3s | %-20s | %-30s | %-15s | %-20s | %-20s |\n",
                     film.getId(), film.getTittle(), film.getShowDate(), film.getDuration(),
                     film.getPrice(), film.getCode());
+        }
+    }
+
+    public static String readById (int id){
+        try(Connection connection = DbConnector.connectToDb()){
+            String sql = String.format("SELECT title FROM t_film WHERE id = ?;");
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setInt(1, id);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            String tittle ="";
+            while (resultSet.next()){;
+                tittle = resultSet.getString("title");
+            }
+            preparedStatement.close();
+            return tittle;
+        }catch (SQLException e){
+            throw new RuntimeException(e);
         }
     }
 
