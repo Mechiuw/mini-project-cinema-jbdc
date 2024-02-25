@@ -14,7 +14,8 @@ public class TheaterView {
             System.out.println("2. UPDATE THEATER BY ID");
             System.out.println("3. DELETE THEATER");
             System.out.println("4. SHOW ALL THEATER");
-            System.out.println("5. BACK TO MENU ADMIN");
+            System.out.println("5. UPDATE THEATER STOCK");
+            System.out.println("6. BACK TO MENU ADMIN");
             System.out.println("=================================================");
             System.out.println("Choose Menu : ");
             int chooseFilm = input.nextInt();
@@ -24,7 +25,8 @@ public class TheaterView {
                 case 2 -> TheaterServiceImpl.updateTheater();
                 case 3 -> TheaterServiceImpl.deleteTheater();
                 case 4 -> TheaterServiceImpl.readTheater();
-                case 5 -> checkFilm = false;
+                case 5 -> TheaterServiceImpl.updateTheaterStock();
+                case 6 -> checkFilm = false;
                 default-> checkFilm = true;
             }
         }while(checkFilm);
