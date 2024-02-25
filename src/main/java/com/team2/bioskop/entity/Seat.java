@@ -5,6 +5,8 @@ public class Seat {
     private String seatNumber;
     private int theaterId;
 
+    private String theaterNumber;
+
     public Seat(final String seatNumber, final int theaterId) {
         this.seatNumber = seatNumber;
         this.theaterId = theaterId;
@@ -14,6 +16,22 @@ public class Seat {
         this.id = id;
         this.seatNumber = seatNumber;
         this.theaterId = theaterId;
+    }
+
+    public Seat(){
+
+    }
+
+    public void setSeatNumber(String seatNumber) {
+        this.seatNumber = seatNumber;
+    }
+
+    public String getTheaterNumber() {
+        return theaterNumber;
+    }
+
+    public void setTheaterNumber(String theaterNumber) {
+        this.theaterNumber = theaterNumber;
     }
 
     public int getId() {
