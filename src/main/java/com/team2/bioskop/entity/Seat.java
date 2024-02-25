@@ -10,6 +10,12 @@ public class Seat {
         this.theaterId = theaterId;
     }
 
+    public Seat(final int id, final String seatNumber, final int theaterId) {
+        this.id = id;
+        this.seatNumber = seatNumber;
+        this.theaterId = theaterId;
+    }
+
     public int getId() {
         return id;
     }

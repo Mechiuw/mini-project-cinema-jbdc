@@ -1,5 +1,6 @@
 package com.team2.bioskop.repositories;
 
+import com.team2.bioskop.entity.Seat;
 import com.team2.bioskop.entity.Theater;
 import com.team2.bioskop.util.DbConnector;
 
@@ -45,28 +46,63 @@ public class TheaterRepositories {
         return rs;
     }
 
-    public static Theater readDataByID(Integer id) {
-        Theater theater = new Theater();
-        ResultSet rs;
-        try (Connection conn = DbConnector.connectToDb()) {
+    public static Theater readDataByTheaterNumber(String theaterNumber) {
+        try {
+            var conn = DbConnector.connectToDb();
             String query = """
-                select * from t_theater t
-                where id = ?;
-                """;
-            PreparedStatement pstmt = conn.prepareStatement(query);
-            pstmt.setInt(1, id);
-            rs = pstmt.executeQuery();
+                    SELECT * FROM t_theater WHERE theater_number = ?;
+                    """;
+            PreparedStatement pr = conn.prepareStatement(query);
+            pr.setString(1, theaterNumber);
+            ResultSet rs = pr.executeQuery();
+
+            Theater theater = null;
             if (rs.next()) {
-                theater.setId(rs.getInt("id"));
-                theater.setTheater_number(rs.getString("theater_number"));
-                theater.setStock(rs.getInt("stock"));
-                theater.setFilm_id(rs.getInt("film_id"));
+                theater = new Theater(
+                        Integer.parseInt(rs.getString(1)),
+                        rs.getString(2),
+                        Integer.parseInt(rs.getString(3)),
+                        Integer.parseInt(rs.getString(4)));
             }
-        }catch (SQLException e) {
-            System.out.println(e.getMessage());
+
+            pr.close();
+            rs.close();
+            conn.close();
+            return theater;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
         }
-        return theater;
     }
+
+    public static Theater readDataById(int id) {
+        try {
+            var conn = DbConnector.connectToDb();
+            String query = """
+                    SELECT * FROM t_theater WHERE id = ?;
+                    """;
+            PreparedStatement pr = conn.prepareStatement(query);
+            pr.setInt(1, id);
+            ResultSet rs = pr.executeQuery();
+
+            Theater theater = null;
+            if (rs.next()) {
+                theater = new Theater(
+                        Integer.parseInt(rs.getString(1)),
+                        rs.getString(2),
+                        Integer.parseInt(rs.getString(3)),
+                        Integer.parseInt(rs.getString(4)));
+            }
+
+            pr.close();
+            rs.close();
+            conn.close();
+            return theater;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+
 
     public static Theater updateData(Theater theater) {
         try (Connection conn = DbConnector.connectToDb()) {

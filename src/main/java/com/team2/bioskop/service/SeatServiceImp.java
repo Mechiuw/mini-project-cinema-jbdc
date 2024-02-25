@@ -35,6 +35,11 @@ public class SeatServiceImp implements SeatService {
 
     public boolean createSeat(String seatNumber, int theaterId) {
         try {
+            var theater = TheaterRepositories.readDataById(theaterId);
+            if (theater == null) {
+                System.out.println("Theater Not Found");
+                return false;
+            }
             SeatRepositories.addSeat(seatNumber, theaterId);
             System.out.println(">>> Adding Success <<<");
             return true;
@@ -58,7 +63,7 @@ public class SeatServiceImp implements SeatService {
                 SeatRepositories.addSeat(seatNumberPattern + i, theaterId);
             }
 
-            System.out.println(">>> ADDING SEAT IS SUCCESSFULLY <<<");
+            System.out.println(">>> CREATE SEAT SUCCESSFULLY <<<");
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
@@ -75,7 +80,7 @@ public class SeatServiceImp implements SeatService {
 
             Theater t = new Theater(theaterId, theaterNumber, stockSeatTheater + 1, filmId);
 
-            var listSeat = SeatRepositories.readAll();
+            var listSeat = SeatRepositories.readAll(theaterId);
 
             String lastSeatNumber = listSeat.get(listSeat.size() - 1).getSeatNumber();
             String[] lastSeatNumberSplit = lastSeatNumber.split("-");
@@ -83,6 +88,8 @@ public class SeatServiceImp implements SeatService {
 
             SeatRepositories.addSeat(seatNumberPattern + (extractIndexSeat + 1), theaterId);
             TheaterRepositories.updateData(t);
+
+            System.out.println(">>> CREATE SEAT SUCCESSFULLY <<<");
 
             return true;
         } catch (Exception e) {
@@ -94,6 +101,18 @@ public class SeatServiceImp implements SeatService {
     public boolean updateSeat(int id, String seatNumber, int theaterId) {
         try {
             var seat = SeatRepositories.readOne(id);
+            var theater = TheaterRepositories.readDataById(id);
+
+            if (seat == null) {
+                System.out.println("Seat not found");
+                return false;
+            }
+
+            if (theater == null) {
+                System.out.println("Theater not found");
+                return false;
+            }
+
             String uSeatNumber = (seatNumber.isEmpty()) ? seat.getSeatNumber() : seatNumber;
             int uTheaterId = (theaterId <= 0) ? seat.getTheaterId() : theaterId;
             SeatRepositories.update(id, uSeatNumber, uTheaterId);
@@ -106,14 +125,31 @@ public class SeatServiceImp implements SeatService {
         }
     }
 
-    public boolean deleteSeat(int id) {
+    public boolean deleteSeat(String seatNumber) {
         try {
-            var seat = SeatRepositories.readOne(id);
+            var seat = SeatRepositories.readOne(seatNumber);
             if (seat == null) {
                 System.out.println("Seat not found");
                 return false;
             }
-            SeatRepositories.delete(id);
+
+            var theater = TheaterRepositories.readDataById(seat.getTheaterId());
+            if (theater == null) {
+                System.out.println("Theater not found");
+                return false;
+            }
+
+            if (seat.getTheaterId() != theater.getId()) {
+                System.out.println("Theater ID from seat and theater does not match");
+                return false;
+            }
+
+            Theater t = new Theater(theater.getId(), theater.getTheater_number(),
+                    theater.getStock() - 1, theater.getFilm_id());
+
+            TheaterRepositories.updateData(t);
+            SeatRepositories.delete(seat.getId());
+
             System.out.println(">>> DELETE SUCCESSFULLY <<<");
             return true;
         } catch (Exception e) {

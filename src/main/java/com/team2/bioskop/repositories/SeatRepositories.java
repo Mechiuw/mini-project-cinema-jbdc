@@ -70,16 +70,14 @@ public class SeatRepositories {
     public static ArrayList<Seat> readAll(int theaterId) {
         ArrayList<Seat> listSeat;
         try {
-
             listSeat = new ArrayList<>();
             var conn = DbConnector.connectToDb();
             String query = """
-                    SELECT * FROM m_seat s INNER JOIN 
-                    t_theater t ON s.theater_id = t.id;
-                    GROUP BY s.id;
+                    SELECT * FROM m_seat WHERE theater_id = ?;
                     """;
 
             PreparedStatement pr = conn.prepareStatement(query);
+            pr.setInt(1, theaterId);
             ResultSet rs = pr.executeQuery();
             var meta = rs.getMetaData();
 
@@ -88,11 +86,13 @@ public class SeatRepositories {
                     System.out.printf("%-20s", rs.getString(i));
                 }
                 Seat seat = new Seat(
-                        rs.getString(1),
+                        rs.getString(2),
                         Integer.parseInt(rs.getString(3)));
                 listSeat.add(seat);
                 System.out.println();
             }
+
+
             pr.close();
             rs.close();
             conn.close();
@@ -114,8 +114,36 @@ public class SeatRepositories {
             Seat seat = null;
             if (rs.next()) {
                 seat = new Seat(
-                        rs.getString(1),
-                        Integer.parseInt(rs.getString(2)));
+                        Integer.parseInt(rs.getString(1)),
+                        rs.getString(2),
+                        Integer.parseInt(rs.getString(3)));
+            }
+
+            pr.close();
+            rs.close();
+            conn.close();
+            return seat;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static Seat readOne(String seatNumber) {
+        try {
+            var conn = DbConnector.connectToDb();
+            String query = """
+                    SELECT * FROM m_seat WHERE seat_number = ?;
+                    """;
+            PreparedStatement pr = conn.prepareStatement(query);
+            pr.setString(1, seatNumber);
+            ResultSet rs = pr.executeQuery();
+
+            Seat seat = null;
+            if (rs.next()) {
+                seat = new Seat(
+                        Integer.parseInt(rs.getString(1)),
+                        rs.getString(2),
+                        Integer.parseInt(rs.getString(3)));
             }
 
             pr.close();
@@ -131,7 +159,7 @@ public class SeatRepositories {
         try {
             var conn = DbConnector.connectToDb();
             String query = """
-                    UPDATE m_seat SET seat_number = ?, theater_number = ? WHERE id = ?; 
+                    UPDATE m_seat SET seat_number = ?, theater_id = ? WHERE id = ?; 
                     """;
 
             PreparedStatement pr = conn.prepareStatement(query);
@@ -166,4 +194,5 @@ public class SeatRepositories {
             throw new RuntimeException(e);
         }
     }
+
 }

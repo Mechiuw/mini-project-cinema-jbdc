@@ -58,18 +58,40 @@ public class TheaterServiceImpl implements TheaterService{
         }
     }
 
+//    public static Theater readTheater() {
+//        ResultSet rs;
+//        Theater theater = null;
+//        try {
+//            rs = TheaterRepositories.readData();
+//
+//            System.out.println("ID | Theater Number | Stock | Title     |");
+//            while (rs.next()) {
+//                System.out.print(rs.getString("id") + "  | ");
+//                System.out.print(rs.getString("theater_number") + "             | ");
+//                System.out.print(rs.getString("stock") + "   | ");
+//                System.out.println(rs.getString("title") + " | ");
+//                theater = new Theater(rs.getString("stock"),
+//                        Integer.parseInt(rs.getString("film_id")),
+//                        Integer.parseInt(rs.getString("id")));
+//            }
+//        }catch (SQLException e){
+//            System.out.println(e.getMessage());
+//        }
+//        return theater;
+//    }
+
     public static Theater readTheater() {
         ResultSet rs;
         Theater theater = null;
         try {
             rs = TheaterRepositories.readData();
 
-            System.out.println("ID | Theater Number | Stock | Title     |");
+            System.out.println("ID | Theater Number | Stock | film_id     |");
             while (rs.next()) {
                 System.out.print(rs.getString("id") + "  | ");
                 System.out.print(rs.getString("theater_number") + "             | ");
                 System.out.print(rs.getString("stock") + "   | ");
-                System.out.println(rs.getString("title") + " | ");
+                System.out.println(rs.getString("film_id") + " | ");
                 theater = new Theater(rs.getString("stock"),
                         Integer.parseInt(rs.getString("film_id")),
                         Integer.parseInt(rs.getString("id")));
