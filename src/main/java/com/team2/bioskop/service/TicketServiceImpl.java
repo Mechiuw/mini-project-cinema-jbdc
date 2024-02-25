@@ -84,4 +84,8 @@ public class TicketServiceImpl implements TicketService{
         }while(check);
     }
 
+    public void showTicket(){
+        TicketRepositories.getTicket();
+    }
+
 }
