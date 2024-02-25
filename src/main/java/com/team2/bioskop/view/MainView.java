@@ -29,6 +29,8 @@ public class MainView {
                     break;
                 case 3 :
                     TicketView.view();
+                    break;
+                case 4 :
                     checkMenu = false;
                     break;
                 default :

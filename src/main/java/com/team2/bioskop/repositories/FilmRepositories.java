@@ -86,7 +86,8 @@ public class FilmRepositories {
                     ,t_film.price ,t_rating.code
                     FROM t_film
                         JOIN t_rating ON t_film.rating_id = t_rating.id
-                    GROUP BY t_film.id, t_rating.code;
+                    GROUP BY t_film.id, t_rating.code
+                    ORDER BY t_film.id ASC;
                     """;
 
             Statement statement = connection.createStatement();
