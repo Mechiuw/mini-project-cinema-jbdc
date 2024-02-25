@@ -1,4 +1,5 @@
 package com.team2.bioskop.view;
+import com.team2.bioskop.repositories.TheaterRepositories;
 import com.team2.bioskop.service.SeatService;
 import com.team2.bioskop.service.SeatServiceImp;
 import com.team2.bioskop.util.Validation;
@@ -40,22 +41,14 @@ public class SeatView {
                     System.out.println();
                 }
                 case 3 -> {
-                    System.out.print("Enter Seat ID: ");
-                    int id;
-                    do {
-                        id = Validation.checkNumberInput(input.nextLine());
-                    } while (id == -1);
-
-                    System.out.print("Enter Seat Number: ");
-                    String seatNumber = input.nextLine();
-
                     System.out.print("Enter Theater Number: ");
-                    int theaterId;
-                    do {
-                        theaterId = Validation.checkNumberInput(input.nextLine());
-                    } while (theaterId == -1);
-
-                    isSuccess = seatService.createSeat(seatNumber, theaterId);
+                    String theaterNumber = input.nextLine();
+                    var theater = TheaterRepositories.readDataByTheaterNumber(theaterNumber);
+                    if (theater == null) {
+                        System.out.println("Theater Not Found");
+                        return;
+                    }
+                    isSuccess = seatService.createSeat(theater);
                     System.out.println();
                 }
 

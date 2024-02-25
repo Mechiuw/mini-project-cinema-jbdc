@@ -1,5 +1,6 @@
 package com.team2.bioskop.repositories;
 
+import com.team2.bioskop.entity.Seat;
 import com.team2.bioskop.entity.Theater;
 import com.team2.bioskop.util.DbConnector;
 
@@ -44,6 +45,36 @@ public class TheaterRepositories {
         }
         return rs;
     }
+
+    public static Theater readDataByTheaterNumber(String theaterNumber) {
+        try {
+            var conn = DbConnector.connectToDb();
+            String query = """
+                    SELECT * FROM t_theater WHERE theater_number = ?;
+                    """;
+            PreparedStatement pr = conn.prepareStatement(query);
+            pr.setString(1, theaterNumber);
+            ResultSet rs = pr.executeQuery();
+
+            Theater theater = null;
+            if (rs.next()) {
+                theater = new Theater(
+                        Integer.parseInt(rs.getString(1)),
+                        rs.getString(2),
+                        Integer.parseInt(rs.getString(3)),
+                        Integer.parseInt(rs.getString(4)));
+            }
+
+            pr.close();
+            rs.close();
+            conn.close();
+            return theater;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+
 
     public static Theater updateData(Theater theater) {
         try (Connection conn = DbConnector.connectToDb()) {

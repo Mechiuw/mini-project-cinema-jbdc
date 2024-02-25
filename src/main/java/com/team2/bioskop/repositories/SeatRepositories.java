@@ -70,16 +70,14 @@ public class SeatRepositories {
     public static ArrayList<Seat> readAll(int theaterId) {
         ArrayList<Seat> listSeat;
         try {
-
             listSeat = new ArrayList<>();
             var conn = DbConnector.connectToDb();
             String query = """
-                    SELECT * FROM m_seat s INNER JOIN 
-                    t_theater t ON s.theater_id = t.id;
-                    GROUP BY s.id;
+                    SELECT * FROM m_seat WHERE theater_id = ?;
                     """;
 
             PreparedStatement pr = conn.prepareStatement(query);
+            pr.setInt(1, theaterId);
             ResultSet rs = pr.executeQuery();
             var meta = rs.getMetaData();
 
@@ -88,11 +86,13 @@ public class SeatRepositories {
                     System.out.printf("%-20s", rs.getString(i));
                 }
                 Seat seat = new Seat(
-                        rs.getString(1),
+                        rs.getString(2),
                         Integer.parseInt(rs.getString(3)));
                 listSeat.add(seat);
                 System.out.println();
             }
+
+
             pr.close();
             rs.close();
             conn.close();
