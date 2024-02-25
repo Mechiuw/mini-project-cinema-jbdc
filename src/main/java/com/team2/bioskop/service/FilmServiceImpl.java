@@ -83,9 +83,17 @@ public class FilmServiceImpl implements FilmService{
 
     public void deleteFilm(){
         FilmRepositories.showAllFilm();
-        System.out.println("Input ID Film Delete : ");
-        int id = input.nextInt();
-        input.nextLine();
+        Film film = null;
+        int id;
+        do {
+            System.out.println("Input ID Film Delete : ");
+            id = input.nextInt();
+            input.nextLine();
+            film = FilmUtil.readFilmId(id);
+            if(film == null){
+                System.out.println("FILM NOT FOUND");
+            }
+        } while (film == null);
         FilmRepositories.delete(id);
     }
 
