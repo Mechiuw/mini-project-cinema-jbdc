@@ -28,7 +28,10 @@ public class SeatView {
                 case 0 -> {
                     loop = false;
                 }
-                case 1 -> seatService.getAllSeat();
+                case 1 -> {
+                    seatService.getAllSeat();
+                    System.out.println();
+                }
                 case 2 -> {
                     System.out.print("Enter Seat ID: ");
                     int id;
@@ -39,6 +42,7 @@ public class SeatView {
 
                     isSuccess = seatService.getSeatById(id);
                     System.out.println();
+                    System.out.println();
                 }
                 case 3 -> {
                     System.out.print("Enter Theater Number: ");
@@ -46,9 +50,9 @@ public class SeatView {
                     var theater = TheaterRepositories.readDataByTheaterNumber(theaterNumber);
                     if (theater == null) {
                         System.out.println("Theater Not Found");
-                        return;
+                    } else {
+                        isSuccess = seatService.createSeat(theater);
                     }
-                    isSuccess = seatService.createSeat(theater);
                     System.out.println();
                 }
 
@@ -73,13 +77,9 @@ public class SeatView {
 
                 }
                 case 5 -> {
-                    System.out.print("Enter Seat ID: ");
-                    int id;
-                    do {
-                        id = Validation.checkNumberInput(input.nextLine());
-                    } while (id == -1);
-
-                    isSuccess = seatService.deleteSeat(id);
+                    System.out.print("Enter Seat Number: ");
+                    String seatNumber = input.nextLine();
+                    isSuccess = seatService.deleteSeat(seatNumber);
                     System.out.println();
                 }
                 default -> {

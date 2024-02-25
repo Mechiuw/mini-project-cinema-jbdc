@@ -9,5 +9,5 @@ public interface SeatService {
     boolean createSeat(String seatNumber, int theaterId);
     boolean createSeat(Theater theater);
     boolean updateSeat(int id, String seatNumber, int theaterId);
-    boolean deleteSeat(int id);
+    boolean deleteSeat(String seatNumber);
 }
