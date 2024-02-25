@@ -13,6 +13,7 @@ public class MainView {
             System.out.println("===================ENIGMA XXI====================");
             System.out.println("1. CUSTOMER");
             System.out.println("2. ADMIN");
+            System.out.println("3. TRANSACTION");
             System.out.println("3. EXIT");
             System.out.println("=================================================");
             System.out.println("Choose Menu : ");
@@ -27,6 +28,7 @@ public class MainView {
                     AdminView.viewAdmin();
                     break;
                 case 3 :
+                    TicketView.view();
                     checkMenu = false;
                     break;
                 default :
