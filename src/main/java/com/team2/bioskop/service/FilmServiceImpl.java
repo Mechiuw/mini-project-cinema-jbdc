@@ -25,6 +25,10 @@ public class FilmServiceImpl implements FilmService{
 
         System.out.println("Input Price : ");
         int price = input.nextInt();
+
+        RatingService ratingService = new RatingServiceImpl();
+        ratingService.showRatings();
+
         System.out.println("Input Rating : ");
         int rating = input.nextInt();
         input.nextLine();
@@ -54,6 +58,10 @@ public class FilmServiceImpl implements FilmService{
 
         System.out.println("Input Price : ");
         int price = input.nextInt();
+
+        RatingService ratingService = new RatingServiceImpl();
+        ratingService.showRatings();
+
         System.out.println("Input Rating : ");
         int rating = input.nextInt();
         input.nextLine();
