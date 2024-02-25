@@ -124,4 +124,21 @@ public class FilmRepositories {
         }
     }
 
+    public static String readById (int id){
+        try(Connection connection = DbConnector.connectToDb()){
+            String sql = String.format("SELECT title FROM t_film WHERE id = ?;");
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setInt(1, id);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            String tittle ="";
+            while (resultSet.next()){;
+                tittle = resultSet.getString("title");
+            }
+            preparedStatement.close();
+            return tittle;
+        }catch (SQLException e){
+            throw new RuntimeException(e);
+        }
+    }
+
 }
