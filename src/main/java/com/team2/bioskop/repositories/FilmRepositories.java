@@ -74,7 +74,7 @@ public class FilmRepositories {
             preparedStatement.executeUpdate();
             preparedStatement.close();
         }catch (SQLException e){
-            throw new RuntimeException(e);
+            System.out.println("FILM SEDANG TAYANG DI THEATER");
         }
     }
 
