@@ -9,10 +9,5 @@ public class Main {
     public static void main(String[] args) {
         var seat = new SeatServiceImp();
 
-//        SeatRepositories.readAll();
-//        TheaterServiceImpl.readTheater();
-        seat.createSeat(new Theater(6, "800", 21, 7));
-        // SeatRepositories.readAll();
-        // TheaterServiceImpl.readTheater();
     }
 }

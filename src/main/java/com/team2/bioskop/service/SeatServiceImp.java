@@ -35,6 +35,11 @@ public class SeatServiceImp implements SeatService {
 
     public boolean createSeat(String seatNumber, int theaterId) {
         try {
+//            var theater = TheaterRepositories.readDataById(theaterId);
+//            if (theater == null) {
+//                System.out.println("Theater Not Found");
+//                return false;
+//            }
             SeatRepositories.addSeat(seatNumber, theaterId);
             System.out.println(">>> Adding Success <<<");
             return true;
@@ -94,6 +99,12 @@ public class SeatServiceImp implements SeatService {
     public boolean updateSeat(int id, String seatNumber, int theaterId) {
         try {
             var seat = SeatRepositories.readOne(id);
+
+            if (seat == null) {
+                System.out.println("Seat not found");
+                return false;
+            }
+
             String uSeatNumber = (seatNumber.isEmpty()) ? seat.getSeatNumber() : seatNumber;
             int uTheaterId = (theaterId <= 0) ? seat.getTheaterId() : theaterId;
             SeatRepositories.update(id, uSeatNumber, uTheaterId);

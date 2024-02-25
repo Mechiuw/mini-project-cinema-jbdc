@@ -70,7 +70,6 @@ public class SeatRepositories {
     public static ArrayList<Seat> readAll(int theaterId) {
         ArrayList<Seat> listSeat;
         try {
-
             listSeat = new ArrayList<>();
             var conn = DbConnector.connectToDb();
             String query = """
