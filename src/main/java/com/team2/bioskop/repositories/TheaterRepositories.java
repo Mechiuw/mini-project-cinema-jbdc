@@ -164,7 +164,7 @@ public class TheaterRepositories {
                 pstmt.setString(1, theater.getTheater_number());
                 int rowsAffected = pstmt.executeUpdate();
                 if (rowsAffected > 0) {
-                    System.out.println("Successfully deleted data");
+                    System.out.println();
                 } else {
                     System.out.println("No data found for deletion");
                 }

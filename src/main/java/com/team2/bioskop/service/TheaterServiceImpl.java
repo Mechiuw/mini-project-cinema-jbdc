@@ -7,6 +7,7 @@ import com.team2.bioskop.view.SeatView;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class TheaterServiceImpl implements TheaterService{
@@ -17,14 +18,16 @@ public class TheaterServiceImpl implements TheaterService{
         try {
             System.out.println("Input ID");
             int id = -1;
-            while (id < 0) {
+            while (id <= 0) {
                 try {
                     id = input.nextInt();
-                    if (id < 0) {
-                        System.out.println("Stock should be a non-negative integer. Please enter again:");
+                    if (id <= 0) {
+                        System.out.println("ID should be a positive integer. Please enter again:");
                     }
-                }catch (Exception e) {
-                    System.out.println(e.getMessage());
+                } catch (InputMismatchException e) {
+                    System.out.println("Invalid input. ID must be an integer. Please enter again:");
+                    input.next();
+                    id = -1;
                 }
             }
             input.nextLine();
@@ -40,18 +43,34 @@ public class TheaterServiceImpl implements TheaterService{
                         System.out.println("Stock should be a non-negative integer. Please enter again:");
                     }
                 } catch (Exception e) {
-                    System.out.println("Invalid input. Stock should be a non-negative integer. Please enter again:");
+                    System.out.println("Invalid input. Stock must be an integer. Please enter again:");
                     input.next();
+                    stock = -1;
                 }
             }
+            input.nextLine();
+
             System.out.println("Input Film ID");
-            Integer film_id = input.nextInt();
+            int film_id = -1;
+            while (film_id <= 0) {
+                try {
+                    film_id = input.nextInt();
+                    if (film_id <= 0) {
+                        System.out.println("Stock should be a non-negative integer. Please enter again:");
+                    }
+                } catch (Exception e) {
+                    System.out.println("Invalid input. Stock must be an integer. Please enter again:");
+                    input.next();
+                    film_id = -1;
+                }
+            }
+            input.nextLine();
 
             theater = TheaterRepositories.addData(new Theater(id, theater_number, stock, film_id));
             System.out.println("Successfully insert data");
-            System.out.println("theater_number -> " + theater_number);
-            System.out.println("stock -> " + stock);
-            System.out.println("film_id -> " + film_id);
+            System.out.println("| theater_number -> " + theater_number + " |");
+            System.out.println("| stock -> " + stock + " |");
+            System.out.println("| film_id -> " + film_id + " |");
 
             var seat = new SeatServiceImp();
             seat.createManySeat(theater);
@@ -88,12 +107,18 @@ public class TheaterServiceImpl implements TheaterService{
         try {
             rs = TheaterRepositories.readData();
 
-            System.out.println("ID | Theater Number | Stock | film_id     |");
+            if (!rs.isBeforeFirst()) {
+                System.out.println("No theaters found");
+                return null;
+            }
+
+            System.out.println("| ID  | Theater Number  | Stock  | film_id |");
             while (rs.next()) {
-                System.out.print(rs.getString("id") + "  | ");
-                System.out.print(rs.getString("theater_number") + "             | ");
-                System.out.print(rs.getString("stock") + "   | ");
-                System.out.println(rs.getString("film_id") + " | ");
+                System.out.printf("| %-4s| %-16s| %-7s| %-7s |%n",
+                        rs.getString("id"),
+                        rs.getString("theater_number"),
+                        rs.getString("stock"),
+                        rs.getString("film_id"));
                 theater = new Theater(rs.getString("stock"),
                         Integer.parseInt(rs.getString("film_id")),
                         Integer.parseInt(rs.getString("id")));
