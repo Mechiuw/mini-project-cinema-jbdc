@@ -1,6 +1,7 @@
 package com.team2.bioskop.repositories;
 
 import com.team2.bioskop.entity.Seat;
+import com.team2.bioskop.entity.Theater;
 import com.team2.bioskop.util.DbConnector;
 
 import java.sql.PreparedStatement;
@@ -187,6 +188,22 @@ public class SeatRepositories {
                     """;
             PreparedStatement pr = conn.prepareStatement(query);
             pr.setInt(1, id);
+            pr.executeUpdate();
+            pr.close();
+            conn.close();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static void delete(Theater theater) {
+        try {
+            var conn = DbConnector.connectToDb();
+            String query = """
+                    DELETE FROM m_seat WHERE theater_id = ?;
+                    """;
+            PreparedStatement pr = conn.prepareStatement(query);
+            pr.setInt(1, theater.getId());
             pr.executeUpdate();
             pr.close();
             conn.close();

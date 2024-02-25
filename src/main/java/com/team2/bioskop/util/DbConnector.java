@@ -12,9 +12,7 @@ public class DbConnector {
         final String PASSWORD = System.getenv("DB_PASSWORD");
         connect = DriverManager.getConnection(JDBC_URL, USERNAME, PASSWORD);
 
-            if(connect != null){
-                System.out.println("Connect Success");
-            }else{
+            if(connect == null){
                 System.out.println("Connect Failed");
             }
             return connect;
