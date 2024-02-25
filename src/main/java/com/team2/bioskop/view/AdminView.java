@@ -14,7 +14,8 @@ public class AdminView {
             System.out.println("2. THEATER");
             System.out.println("3. SEAT");
             System.out.println("4. RATING");
-            System.out.println("5. BACK TO MAIN MENU");
+            System.out.println("5. SHOW ALL TRANSACTION");
+            System.out.println("6. BACK TO MAIN MENU");
             System.out.println("=================================================");
             System.out.println("Choose Menu : ");
             int chooseAdmin = input.nextInt();
@@ -23,9 +24,10 @@ public class AdminView {
             switch (chooseAdmin){
                 case 1 -> FilmView.view();
                 case 2 -> TheaterView.view();
-                case 3 -> RatingView.view();
+                case 3 -> SeatView.SeatMenu();
                 case 4 -> RatingView.view();
-                case 5 -> checkAdmin = false;
+                case 5 -> TransactionView.view();
+                case 6 -> checkAdmin = false;
                 default-> checkAdmin = true;
             }
         }while(checkAdmin);

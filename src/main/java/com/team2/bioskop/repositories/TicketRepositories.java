@@ -14,8 +14,8 @@ import java.util.List;
 import java.util.Set;
 
 public class TicketRepositories {
-    public static void insert(Ticket ticket, String customerName, String seatId){
-        try(Connection connection = DbConnector.connectToDb()){
+    public static void insert(Ticket ticket, String customerName, String seatId) {
+        try (Connection connection = DbConnector.connectToDb()) {
             connection.setAutoCommit(false);
 
 
@@ -27,7 +27,7 @@ public class TicketRepositories {
             preparedStatementSelect.setString(1, customerName);
             ResultSet resultSet = preparedStatementSelect.executeQuery();
             int result = 0;
-            if(resultSet.next()){
+            if (resultSet.next()) {
                 result = resultSet.getInt("id");
             }
 
@@ -88,15 +88,15 @@ public class TicketRepositories {
             preparedStatementSelect.close();
             preparedStatement.close();
             connection.commit();
-        }catch (SQLException e){
+        } catch (SQLException e) {
             throw new RuntimeException(e);
 
         }
     }
 
-    public static List<Seat> getSeat(String theaterName){
-        try(Connection connection = DbConnector.connectToDb()){
-            List <Seat> seats = new ArrayList<>() ;
+    public static List<Seat> getSeat(String theaterName) {
+        try (Connection connection = DbConnector.connectToDb()) {
+            List<Seat> seats = new ArrayList<>();
             String sql = """
                     Select t.seat_number, h.theater_number
                     FROM t_seat t
@@ -113,7 +113,8 @@ public class TicketRepositories {
             statement.setString(1, theaterName);
             ResultSet resultSet = statement.executeQuery();
 
-            while (resultSet.next()){;
+            while (resultSet.next()) {
+                ;
                 String seatNumber = resultSet.getString("seat_number");
                 String theaterNumber = resultSet.getString("theater_number");
                 Seat seat = new Seat();
@@ -123,14 +124,14 @@ public class TicketRepositories {
             }
             statement.close();
             return seats;
-        }catch (SQLException e){
+        } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
 
-    public static List<Ticket> getSeatTicket(String theaterName){
-        try(Connection connection = DbConnector.connectToDb()){
-            List <Ticket> ticketSeats = new ArrayList<>() ;
+    public static List<Ticket> getSeatTicket(String theaterName) {
+        try (Connection connection = DbConnector.connectToDb()) {
+            List<Ticket> ticketSeats = new ArrayList<>();
             String sql = """
                     Select s.seat_number, h.theater_number
                     FROM trx_ticket t
@@ -149,7 +150,8 @@ public class TicketRepositories {
             statement.setString(1, theaterName);
             ResultSet resultSet = statement.executeQuery();
 
-            while (resultSet.next()){;
+            while (resultSet.next()) {
+                ;
                 String seatNumber = resultSet.getString("seat_number");
                 String theaterNumber = resultSet.getString("theater_number");
                 Ticket ticket = new Ticket();
@@ -159,12 +161,12 @@ public class TicketRepositories {
             }
             statement.close();
             return ticketSeats;
-        }catch (SQLException e){
+        } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
 
-    public static void showTicketAvailable(String theaterName){
+    public static void showTicketAvailable(String theaterName) {
         List<Seat> seats = getSeat(theaterName);
         List<Ticket> tickets = getSeatTicket(theaterName);
 
@@ -177,12 +179,12 @@ public class TicketRepositories {
         System.out.println("|                        UPSIDE                            |");
         System.out.println("============================================================");
         for (Seat seat : seats) {
-            String seatStatus = bookedSeats.contains(seat.getSeatNumber()) ? "\u001B[31m" + seat.getSeatNumber()+ "\u001B[0m " : seat.getSeatNumber();
-            System.out.printf("[ %-2s","");
-            System.out.printf("%-3s ]",seatStatus);
+            String seatStatus = bookedSeats.contains(seat.getSeatNumber()) ? "\u001B[31m" + seat.getSeatNumber() + "\u001B[0m " : seat.getSeatNumber();
+            System.out.printf("[ %-2s", "");
+            System.out.printf("%-3s ]", seatStatus);
             counter++;
 
-            if(counter%5 == 0){
+            if (counter % 5 == 0) {
                 System.out.println();
             }
         }
@@ -190,5 +192,49 @@ public class TicketRepositories {
         System.out.println("|                        SCREEN                            |");
         System.out.println("============================================================");
         System.out.println();
+    }
+
+    public static void getTicket() {
+        try (Connection connection = DbConnector.connectToDb()) {
+            String sql = """
+                    Select c.name, f.title, s.seat_number, h.theater_number
+                    FROM trx_ticket t
+                        JOIN
+                        t_seat s ON s.id = t.seat_id
+                        JOIN
+                        t_theater h ON h.id = s.theater_id
+                        JOIN
+                    	t_film f ON f.id = h.film_id
+                    	JOIN
+                    	m_customer c ON c.id = t.customer_id
+                     GROUP BY c.name, f.title, s.seat_number, h.theater_number
+                     ORDER BY c.name ASC;
+                    """;
+
+            PreparedStatement statement = connection.prepareStatement(sql);
+            ResultSet resultSet = statement.executeQuery();
+
+
+            System.out.println("\t\t\t\t\t\t\t\t\t\t======================TRANSACTION LIST=============================");
+            System.out.printf("| %-20s | %-20s | %-20s | %-20s |\n",
+                    "Customer", "Title", "Seat Number", "Theater");
+
+            String customer = "";
+            String tittle = "";
+            String seatNumber = "";
+            String theaterNumber = "";
+
+            while (resultSet.next()) {
+                customer = resultSet.getString("name");
+                tittle = resultSet.getString("title");
+                seatNumber = resultSet.getString("seat_number");
+                theaterNumber = resultSet.getString("theater_number");
+                System.out.printf("| %-20s | %-20s | %-20s | %-20s |\n",
+                        customer, tittle, seatNumber, theaterNumber);
+            }
+            statement.close();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 }
