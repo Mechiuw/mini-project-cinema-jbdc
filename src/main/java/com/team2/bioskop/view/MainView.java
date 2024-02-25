@@ -1,6 +1,5 @@
 package com.team2.bioskop.view;
 
-import com.team2.bioskop.service.FilmServiceImpl;
 import com.team2.bioskop.util.AuthenticationUtil;
 
 import java.util.Scanner;
