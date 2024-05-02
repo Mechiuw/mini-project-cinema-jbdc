@@ -3,6 +3,7 @@ package com.team2.bioskop.service;
 import com.team2.bioskop.entity.Customer;
 import com.team2.bioskop.entity.Theater;
 import com.team2.bioskop.entity.Ticket;
+import com.team2.bioskop.repositories.AgeValidationRepositories;
 import com.team2.bioskop.repositories.TheaterRepositories;
 import com.team2.bioskop.repositories.TicketRepositories;
 
@@ -34,8 +35,18 @@ public class TicketServiceImpl implements TicketService{
 
         System.out.println("Select Your Film : ");
         int filmId = input.nextInt();
-        input.nextLine();
-        TheaterRepositories.readTheater(filmId);
+        switch(filmId){
+            case 4,6:
+                if(AgeValidationRepositories.ageFound <= 21 ){
+                    System.out.println("age restricted");
+                } else{
+                    input.nextLine();
+                    TheaterRepositories.readTheater(filmId);
+                }
+                break;
+            default:
+                buyTicket();
+        }
 
         Theater theater;
         String theaterNumber;
